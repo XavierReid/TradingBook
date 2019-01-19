@@ -1,0 +1,20 @@
+{
+  "name": "TradingBook",
+  "version": "1.0.0",
+  "description": "# Xavier Reid",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XavierReid/TradingBook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/XavierReid/TradingBook/issues"
+  },
+  "homepage": "https://github.com/XavierReid/TradingBook#readme"
+}
