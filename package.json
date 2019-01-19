@@ -2,12 +2,12 @@
     "name": "tradingbook",
     "version": "1.0.0",
     "description": "# Xavier Reid",
-    "main": "index.js",
+    "main": "./src/client/index.js",
     "scripts": {
-        "build-watch": "parcel watch ./public/index.html",
-        "start-watch": "nodemon server/index.js",
+        "build-watch": "parcel watch ./src/public/index.html",
+        "start-watch": "nodemon ./src/server/index.js",
         "dev": "concurrently --kill-others \"npm run start-watch\" \"npm run build-watch\"",
-        "build": "parcel build ./public/index.html",
+        "build": "parcel build ./src/public/index.html",
         "start": "npm run build && node server/index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -28,6 +28,7 @@
         "react-dom": "^16.7.0"
     },
     "devDependencies": {
+        "babel-core": "^6.26.3",
         "babel-preset-env": "^1.7.0",
         "babel-preset-react": "^6.24.1",
         "concurrently": "^4.1.0",
