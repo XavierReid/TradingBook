@@ -113,7 +113,7 @@ class Book {
 //     console.log(apple);
 // }, 1000);
 
-module.export = {
+module.exports = {
     Order: Order,
     TradeBook: Book
 };
