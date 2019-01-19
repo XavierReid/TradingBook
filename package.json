@@ -1,20 +1,37 @@
 {
-  "name": "TradingBook",
-  "version": "1.0.0",
-  "description": "# Xavier Reid",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/XavierReid/TradingBook.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/XavierReid/TradingBook/issues"
-  },
-  "homepage": "https://github.com/XavierReid/TradingBook#readme"
+    "name": "tradingbook",
+    "version": "1.0.0",
+    "description": "# Xavier Reid",
+    "main": "index.js",
+    "scripts": {
+        "build-watch": "parcel watch ./public/index.html",
+        "start-watch": "nodemon server/index.js",
+        "dev": "concurrently --kill-others \"npm run start-watch\" \"npm run build-watch\"",
+        "build": "parcel build ./public/index.html",
+        "start": "npm run build && node server/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/XavierReid/TradingBook.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/XavierReid/TradingBook/issues"
+    },
+    "homepage": "https://github.com/XavierReid/TradingBook#readme",
+    "dependencies": {
+        "express": "^4.16.4",
+        "react": "^16.7.0",
+        "react-dom": "^16.7.0"
+    },
+    "devDependencies": {
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-react": "^6.24.1",
+        "concurrently": "^4.1.0",
+        "nodemon": "^1.18.9",
+        "parcel-bundler": "^1.11.0"
+    }
 }
