@@ -1,0 +1,44 @@
+Order:
+- stock it belongs to (aka alphanumeric code called "ticker") 
+    - ex. Apple Inc. == AAPL
+- "side" the order is on (aka buying or selling)
+- price
+- number of shares 
+
+Book:
+- unique to each stock's ticker
+- when 1st order is added, shares "rest" on the book
+    - "rests" on either the buy side or the sell side
+- subsequent orders are checked against the shares resting
+on the opposite "side" (i.e. buy -> sell & sell --> buy)
+
+An incoming order is executed when its price matches or “crosses”
+the “top of the book” on the opposite side.
+    - "top of the book" for buy == highest price
+    - "top of the book" for sell == lowest price
+
+
+when a new order "crosses" the "top of the book" on the opposite "side"
+    - new order is executed
+    - "top of the book" is removed from the book
+    - when the prices cross, the incoming order is executed at the price of the resting shares
+    - "crosses" for buy side == price of buy > price of sell for "top of the book"
+    - "crosses" for sell side == price of sell < price of buy for "top of the book"
+    - ex. if Amy places an order to buy 100 shares at AAPL at $101.00, 
+    and Bob subsequently places an order to sell 100 shares AAPL at $100, 
+    Bob’s order will execute against Amy’s order, and execution price will be $101.00.
+
+when an incoming order matches or crosses a resting order on the opposite side with a smaller number of shares,
+the resting order is removed from the book and the excess shares of the incoming order are added to the book. 
+Conversely, when an incoming order matches or crosses a resting order with a bigger number of shares,
+the incoming order partially executes the resting order, and the number of shares of the resting order is decreased 
+the number of shares in the incoming order. 
+
+
+ex. of workflow:
+9:00 AM: Amy sends an order to buy 100 shares of AAPL at $101.53 (added to the book)
+9:01 AM: Bob sends an order to sell 200 shares of AAPL at $102.47 (added to the book)
+9:02 AM: Charlie sends and order to sell 100 shares of AAPL at $101.60 (added to the book)
+9:03 AM: Dan sends an order to buy 100 shares of AAPL at $101.70 (this crosses Charlie’s order, and both are fully executed at $101.60)
+9:04 AM: Emma sends an order to buy 100 shares of AAPL at $101.60 (added to the book)
+9:05 AM: Fred sends an order to sell 200 shares of AAPL at $101.60 (this matches Emma’s order, and they are executed at $101.60; Emma’s order is executed fully, while Fred’s order is executed partially and the excess shares are added to the book)
