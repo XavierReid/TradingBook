@@ -79,11 +79,13 @@ class Book {
 
     updateBookOrdering(order) {
         const side = this[order.side];
-        side.topOfTheBook.push(order.price);
-        if (order.side === 'buy') {
-            side.topOfTheBook.sort((a, b) => (Number(a) - Number(b)) * -1);
-        } else {
-            side.topOfTheBook.sort((a, b) => Number(a) - Number(b));
+        if (!side.topOfTheBook.includes(order.price)) {
+            side.topOfTheBook.push(order.price);
+            if (order.side === 'buy') {
+                side.topOfTheBook.sort((a, b) => (Number(a) - Number(b)) * -1);
+            } else {
+                side.topOfTheBook.sort((a, b) => Number(a) - Number(b));
+            }
         }
     }
 

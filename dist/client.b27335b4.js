@@ -24556,7 +24556,18 @@ function (_Component) {
       if (missingFields) {
         console.log('Error: You must fill out the entire form');
       } else {
-        console.log(this.state);
+        var data = JSON.stringify(this.state);
+        fetch('/addNewOrder', {
+          method: 'POST',
+          body: data,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          return console.log(data);
+        });
       }
     }
   }, {
@@ -24698,7 +24709,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54013" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53857" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

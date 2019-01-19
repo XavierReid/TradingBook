@@ -30,7 +30,16 @@ class OrderForm extends Component {
         if (missingFields) {
             console.log('Error: You must fill out the entire form');
         } else {
-            console.log(this.state);
+            const data = JSON.stringify(this.state);
+            fetch('/addNewOrder', {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(res => res.json())
+                .then(data => console.log(data));
         }
     }
 
