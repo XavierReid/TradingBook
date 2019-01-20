@@ -8,7 +8,8 @@ class TradeBook extends Component {
         this.state = {
             buy: {},
             sell: {},
-            executed: []
+            executed: [],
+            count: 0
         };
         this.handleBookUpdate = this.handleBookUpdate.bind(this);
     }
@@ -23,8 +24,11 @@ class TradeBook extends Component {
                         executed: data.executed
                     },
                     () => {
-                        if (this.state.executed.length > 0) {
+                        if (this.state.executed.length > this.state.count) {
                             this.props.handleExecutes(this.state.executed);
+                            this.setState({
+                                count: this.state.executed.length
+                            });
                         }
                     }
                 );
@@ -39,8 +43,12 @@ class TradeBook extends Component {
                 executed: data.executed
             },
             () => {
-                if (this.state.executed.length > 0) {
+                console.log(this.state);
+                if (this.state.executed.length > this.state.count) {
                     this.props.handleExecutes(this.state.executed);
+                    this.setState({
+                        count: this.state.executed.length
+                    });
                 }
             }
         );

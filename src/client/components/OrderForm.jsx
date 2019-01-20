@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+import {
+    Form,
+    FormGroup,
+    FormControl,
+    ControlLabel,
+    Button
+} from 'react-bootstrap';
 
 class OrderForm extends Component {
     constructor(props) {
@@ -52,30 +59,39 @@ class OrderForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <select name="side" onChange={this.handleChange}>
-                    <option value="">select a side</option>
-                    <option value="buy">Buy</option>
-                    <option value="sell">Sell</option>
-                </select>
-                <br />
-                <label htmlFor="price">Price: </label>
-                <input
-                    type="number"
-                    name="price"
-                    step="0.01"
-                    onChange={this.handleChange}
-                />
-                <br />
-                <label htmlFor="shareAmount"># of Shares: </label>
-                <input
-                    type="number"
-                    name="shareAmount"
-                    onChange={this.handleChange}
-                />
-                <br />
-                <input type="submit" value="Submit" />
-            </form>
+            <Form inline onSubmit={this.handleSubmit}>
+                <FormGroup>
+                    <ControlLabel>Side</ControlLabel>{' '}
+                    <FormControl
+                        componentClass="select"
+                        name="side"
+                        onChange={this.handleChange}>
+                        <option value="">select a side</option>
+                        <option value="buy">Buy</option>
+                        <option value="sell">Sell</option>
+                    </FormControl>
+                </FormGroup>{' '}
+                <FormGroup controlId="formInlinePrice">
+                    <ControlLabel>Price</ControlLabel>{' '}
+                    <FormControl
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        name="price"
+                        onChange={this.handleChange}
+                    />
+                </FormGroup>{' '}
+                <FormGroup controlId="formInlineShareAmount">
+                    <ControlLabel># of Shares</ControlLabel>{' '}
+                    <FormControl
+                        type="number"
+                        min="0"
+                        name="shareAmount"
+                        onChange={this.handleChange}
+                    />
+                </FormGroup>{' '}
+                <Button type="submit">Submit</Button>
+            </Form>
         );
     }
 }

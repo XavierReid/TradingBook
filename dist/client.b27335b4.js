@@ -24482,244 +24482,7 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"../../node_modules/react-dom/cjs/react-dom.development.js"}],"../client/components/OrderForm.jsx":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-var OrderForm =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(OrderForm, _Component);
-
-  function OrderForm(props) {
-    var _this;
-
-    _classCallCheck(this, OrderForm);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(OrderForm).call(this, props));
-    _this.state = {
-      side: '',
-      price: '',
-      shareAmount: ''
-    };
-    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    return _this;
-  }
-
-  _createClass(OrderForm, [{
-    key: "handleChange",
-    value: function handleChange(e) {
-      var name = e.target.name;
-      var value = e.target.value;
-      this.setState(_defineProperty({}, name, value));
-    }
-  }, {
-    key: "handleSubmit",
-    value: function handleSubmit(e) {
-      var _this2 = this;
-
-      e.preventDefault();
-      var missingFields = Object.keys(this.state).some(function (key) {
-        return _this2.state[key] === '';
-      });
-
-      if (missingFields) {
-        console.log('Error: You must fill out the entire form');
-      } else {
-        var data = JSON.stringify(this.state);
-        fetch("/addNewOrder/".concat(this.props.ticker), {
-          method: 'POST',
-          body: data,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }).then(function (res) {
-          return res.json();
-        }).then(function (data) {
-          _this2.props.handleUpdate(data);
-        });
-      }
-
-      e.target.reset();
-      this.setState({
-        side: '',
-        price: '',
-        shareAmount: ''
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("form", {
-        onSubmit: this.handleSubmit
-      }, _react.default.createElement("select", {
-        name: "side",
-        onChange: this.handleChange
-      }, _react.default.createElement("option", {
-        value: ""
-      }, "select a side"), _react.default.createElement("option", {
-        value: "buy"
-      }, "Buy"), _react.default.createElement("option", {
-        value: "sell"
-      }, "Sell")), _react.default.createElement("br", null), _react.default.createElement("label", {
-        htmlFor: "price"
-      }, "Price: "), _react.default.createElement("input", {
-        type: "number",
-        name: "price",
-        step: "0.01",
-        onChange: this.handleChange
-      }), _react.default.createElement("br", null), _react.default.createElement("label", {
-        htmlFor: "shareAmount"
-      }, "# of Shares: "), _react.default.createElement("input", {
-        type: "number",
-        name: "shareAmount",
-        onChange: this.handleChange
-      }), _react.default.createElement("br", null), _react.default.createElement("input", {
-        type: "submit",
-        value: "Submit"
-      }));
-    }
-  }]);
-
-  return OrderForm;
-}(_react.Component);
-
-var _default = OrderForm;
-exports.default = _default;
-},{"react":"../../node_modules/react/index.js"}],"../client/components/TradeBook.jsx":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _OrderForm = _interopRequireDefault(require("./OrderForm"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-// import Graph from './Graph';
-var TradeBook =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(TradeBook, _Component);
-
-  function TradeBook(props) {
-    var _this;
-
-    _classCallCheck(this, TradeBook);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TradeBook).call(this, props));
-    _this.state = {
-      buy: {},
-      sell: {},
-      executed: []
-    };
-    _this.handleBookUpdate = _this.handleBookUpdate.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    return _this;
-  }
-
-  _createClass(TradeBook, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      fetch("/tradeBook/".concat(this.props.ticker)).then(function (res) {
-        return res.json();
-      }).then(function (data) {
-        _this2.setState({
-          buy: data.buy,
-          sell: data.sell,
-          executed: data.executed
-        }, function () {
-          if (_this2.state.executed.length > 0) {
-            _this2.props.handleExecutes(_this2.state.executed);
-          }
-        });
-      });
-    }
-  }, {
-    key: "handleBookUpdate",
-    value: function handleBookUpdate(data) {
-      var _this3 = this;
-
-      this.setState({
-        buy: data.buy,
-        sell: data.sell,
-        executed: data.executed
-      }, function () {
-        if (_this3.state.executed.length > 0) {
-          _this3.props.handleExecutes(_this3.state.executed);
-        }
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("div", null, _react.default.createElement("h2", null, this.props.ticker), _react.default.createElement(_OrderForm.default, {
-        ticker: this.props.ticker,
-        handleUpdate: this.handleBookUpdate
-      }));
-    }
-  }]);
-
-  return TradeBook;
-}(_react.Component);
-
-var _default = TradeBook;
-exports.default = _default;
-},{"react":"../../node_modules/react/index.js","./OrderForm":"../client/components/OrderForm.jsx"}],"../../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"../../node_modules/react-dom/cjs/react-dom.development.js"}],"../../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
@@ -43597,7 +43360,260 @@ exports.utils = _utils;
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Accordion":"../../node_modules/react-bootstrap/es/Accordion.js","./Alert":"../../node_modules/react-bootstrap/es/Alert.js","./Badge":"../../node_modules/react-bootstrap/es/Badge.js","./Breadcrumb":"../../node_modules/react-bootstrap/es/Breadcrumb.js","./BreadcrumbItem":"../../node_modules/react-bootstrap/es/BreadcrumbItem.js","./Button":"../../node_modules/react-bootstrap/es/Button.js","./ButtonGroup":"../../node_modules/react-bootstrap/es/ButtonGroup.js","./ButtonToolbar":"../../node_modules/react-bootstrap/es/ButtonToolbar.js","./Carousel":"../../node_modules/react-bootstrap/es/Carousel.js","./CarouselItem":"../../node_modules/react-bootstrap/es/CarouselItem.js","./Checkbox":"../../node_modules/react-bootstrap/es/Checkbox.js","./Clearfix":"../../node_modules/react-bootstrap/es/Clearfix.js","./CloseButton":"../../node_modules/react-bootstrap/es/CloseButton.js","./ControlLabel":"../../node_modules/react-bootstrap/es/ControlLabel.js","./Col":"../../node_modules/react-bootstrap/es/Col.js","./Collapse":"../../node_modules/react-bootstrap/es/Collapse.js","./Dropdown":"../../node_modules/react-bootstrap/es/Dropdown.js","./DropdownButton":"../../node_modules/react-bootstrap/es/DropdownButton.js","./Fade":"../../node_modules/react-bootstrap/es/Fade.js","./Form":"../../node_modules/react-bootstrap/es/Form.js","./FormControl":"../../node_modules/react-bootstrap/es/FormControl.js","./FormGroup":"../../node_modules/react-bootstrap/es/FormGroup.js","./Glyphicon":"../../node_modules/react-bootstrap/es/Glyphicon.js","./Grid":"../../node_modules/react-bootstrap/es/Grid.js","./HelpBlock":"../../node_modules/react-bootstrap/es/HelpBlock.js","./Image":"../../node_modules/react-bootstrap/es/Image.js","./InputGroup":"../../node_modules/react-bootstrap/es/InputGroup.js","./Jumbotron":"../../node_modules/react-bootstrap/es/Jumbotron.js","./Label":"../../node_modules/react-bootstrap/es/Label.js","./ListGroup":"../../node_modules/react-bootstrap/es/ListGroup.js","./ListGroupItem":"../../node_modules/react-bootstrap/es/ListGroupItem.js","./Media":"../../node_modules/react-bootstrap/es/Media.js","./MenuItem":"../../node_modules/react-bootstrap/es/MenuItem.js","./Modal":"../../node_modules/react-bootstrap/es/Modal.js","./ModalBody":"../../node_modules/react-bootstrap/es/ModalBody.js","./ModalDialog":"../../node_modules/react-bootstrap/es/ModalDialog.js","./ModalFooter":"../../node_modules/react-bootstrap/es/ModalFooter.js","./ModalHeader":"../../node_modules/react-bootstrap/es/ModalHeader.js","./ModalTitle":"../../node_modules/react-bootstrap/es/ModalTitle.js","./Nav":"../../node_modules/react-bootstrap/es/Nav.js","./Navbar":"../../node_modules/react-bootstrap/es/Navbar.js","./NavbarBrand":"../../node_modules/react-bootstrap/es/NavbarBrand.js","./NavDropdown":"../../node_modules/react-bootstrap/es/NavDropdown.js","./NavItem":"../../node_modules/react-bootstrap/es/NavItem.js","./Overlay":"../../node_modules/react-bootstrap/es/Overlay.js","./OverlayTrigger":"../../node_modules/react-bootstrap/es/OverlayTrigger.js","./PageHeader":"../../node_modules/react-bootstrap/es/PageHeader.js","./PageItem":"../../node_modules/react-bootstrap/es/PageItem.js","./Pager":"../../node_modules/react-bootstrap/es/Pager.js","./Pagination":"../../node_modules/react-bootstrap/es/Pagination.js","./Panel":"../../node_modules/react-bootstrap/es/Panel.js","./PanelGroup":"../../node_modules/react-bootstrap/es/PanelGroup.js","./Popover":"../../node_modules/react-bootstrap/es/Popover.js","./ProgressBar":"../../node_modules/react-bootstrap/es/ProgressBar.js","./Radio":"../../node_modules/react-bootstrap/es/Radio.js","./ResponsiveEmbed":"../../node_modules/react-bootstrap/es/ResponsiveEmbed.js","./Row":"../../node_modules/react-bootstrap/es/Row.js","./SafeAnchor":"../../node_modules/react-bootstrap/es/SafeAnchor.js","./SplitButton":"../../node_modules/react-bootstrap/es/SplitButton.js","./Tab":"../../node_modules/react-bootstrap/es/Tab.js","./TabContainer":"../../node_modules/react-bootstrap/es/TabContainer.js","./TabContent":"../../node_modules/react-bootstrap/es/TabContent.js","./Table":"../../node_modules/react-bootstrap/es/Table.js","./TabPane":"../../node_modules/react-bootstrap/es/TabPane.js","./Tabs":"../../node_modules/react-bootstrap/es/Tabs.js","./Thumbnail":"../../node_modules/react-bootstrap/es/Thumbnail.js","./ToggleButton":"../../node_modules/react-bootstrap/es/ToggleButton.js","./ToggleButtonGroup":"../../node_modules/react-bootstrap/es/ToggleButtonGroup.js","./Tooltip":"../../node_modules/react-bootstrap/es/Tooltip.js","./Well":"../../node_modules/react-bootstrap/es/Well.js","./utils":"../../node_modules/react-bootstrap/es/utils/index.js"}],"../client/components/ExecutesTable.jsx":[function(require,module,exports) {
+},{"./Accordion":"../../node_modules/react-bootstrap/es/Accordion.js","./Alert":"../../node_modules/react-bootstrap/es/Alert.js","./Badge":"../../node_modules/react-bootstrap/es/Badge.js","./Breadcrumb":"../../node_modules/react-bootstrap/es/Breadcrumb.js","./BreadcrumbItem":"../../node_modules/react-bootstrap/es/BreadcrumbItem.js","./Button":"../../node_modules/react-bootstrap/es/Button.js","./ButtonGroup":"../../node_modules/react-bootstrap/es/ButtonGroup.js","./ButtonToolbar":"../../node_modules/react-bootstrap/es/ButtonToolbar.js","./Carousel":"../../node_modules/react-bootstrap/es/Carousel.js","./CarouselItem":"../../node_modules/react-bootstrap/es/CarouselItem.js","./Checkbox":"../../node_modules/react-bootstrap/es/Checkbox.js","./Clearfix":"../../node_modules/react-bootstrap/es/Clearfix.js","./CloseButton":"../../node_modules/react-bootstrap/es/CloseButton.js","./ControlLabel":"../../node_modules/react-bootstrap/es/ControlLabel.js","./Col":"../../node_modules/react-bootstrap/es/Col.js","./Collapse":"../../node_modules/react-bootstrap/es/Collapse.js","./Dropdown":"../../node_modules/react-bootstrap/es/Dropdown.js","./DropdownButton":"../../node_modules/react-bootstrap/es/DropdownButton.js","./Fade":"../../node_modules/react-bootstrap/es/Fade.js","./Form":"../../node_modules/react-bootstrap/es/Form.js","./FormControl":"../../node_modules/react-bootstrap/es/FormControl.js","./FormGroup":"../../node_modules/react-bootstrap/es/FormGroup.js","./Glyphicon":"../../node_modules/react-bootstrap/es/Glyphicon.js","./Grid":"../../node_modules/react-bootstrap/es/Grid.js","./HelpBlock":"../../node_modules/react-bootstrap/es/HelpBlock.js","./Image":"../../node_modules/react-bootstrap/es/Image.js","./InputGroup":"../../node_modules/react-bootstrap/es/InputGroup.js","./Jumbotron":"../../node_modules/react-bootstrap/es/Jumbotron.js","./Label":"../../node_modules/react-bootstrap/es/Label.js","./ListGroup":"../../node_modules/react-bootstrap/es/ListGroup.js","./ListGroupItem":"../../node_modules/react-bootstrap/es/ListGroupItem.js","./Media":"../../node_modules/react-bootstrap/es/Media.js","./MenuItem":"../../node_modules/react-bootstrap/es/MenuItem.js","./Modal":"../../node_modules/react-bootstrap/es/Modal.js","./ModalBody":"../../node_modules/react-bootstrap/es/ModalBody.js","./ModalDialog":"../../node_modules/react-bootstrap/es/ModalDialog.js","./ModalFooter":"../../node_modules/react-bootstrap/es/ModalFooter.js","./ModalHeader":"../../node_modules/react-bootstrap/es/ModalHeader.js","./ModalTitle":"../../node_modules/react-bootstrap/es/ModalTitle.js","./Nav":"../../node_modules/react-bootstrap/es/Nav.js","./Navbar":"../../node_modules/react-bootstrap/es/Navbar.js","./NavbarBrand":"../../node_modules/react-bootstrap/es/NavbarBrand.js","./NavDropdown":"../../node_modules/react-bootstrap/es/NavDropdown.js","./NavItem":"../../node_modules/react-bootstrap/es/NavItem.js","./Overlay":"../../node_modules/react-bootstrap/es/Overlay.js","./OverlayTrigger":"../../node_modules/react-bootstrap/es/OverlayTrigger.js","./PageHeader":"../../node_modules/react-bootstrap/es/PageHeader.js","./PageItem":"../../node_modules/react-bootstrap/es/PageItem.js","./Pager":"../../node_modules/react-bootstrap/es/Pager.js","./Pagination":"../../node_modules/react-bootstrap/es/Pagination.js","./Panel":"../../node_modules/react-bootstrap/es/Panel.js","./PanelGroup":"../../node_modules/react-bootstrap/es/PanelGroup.js","./Popover":"../../node_modules/react-bootstrap/es/Popover.js","./ProgressBar":"../../node_modules/react-bootstrap/es/ProgressBar.js","./Radio":"../../node_modules/react-bootstrap/es/Radio.js","./ResponsiveEmbed":"../../node_modules/react-bootstrap/es/ResponsiveEmbed.js","./Row":"../../node_modules/react-bootstrap/es/Row.js","./SafeAnchor":"../../node_modules/react-bootstrap/es/SafeAnchor.js","./SplitButton":"../../node_modules/react-bootstrap/es/SplitButton.js","./Tab":"../../node_modules/react-bootstrap/es/Tab.js","./TabContainer":"../../node_modules/react-bootstrap/es/TabContainer.js","./TabContent":"../../node_modules/react-bootstrap/es/TabContent.js","./Table":"../../node_modules/react-bootstrap/es/Table.js","./TabPane":"../../node_modules/react-bootstrap/es/TabPane.js","./Tabs":"../../node_modules/react-bootstrap/es/Tabs.js","./Thumbnail":"../../node_modules/react-bootstrap/es/Thumbnail.js","./ToggleButton":"../../node_modules/react-bootstrap/es/ToggleButton.js","./ToggleButtonGroup":"../../node_modules/react-bootstrap/es/ToggleButtonGroup.js","./Tooltip":"../../node_modules/react-bootstrap/es/Tooltip.js","./Well":"../../node_modules/react-bootstrap/es/Well.js","./utils":"../../node_modules/react-bootstrap/es/utils/index.js"}],"../client/components/OrderForm.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reactBootstrap = require("react-bootstrap");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+var OrderForm =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(OrderForm, _Component);
+
+  function OrderForm(props) {
+    var _this;
+
+    _classCallCheck(this, OrderForm);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(OrderForm).call(this, props));
+    _this.state = {
+      side: '',
+      price: '',
+      shareAmount: ''
+    };
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+
+  _createClass(OrderForm, [{
+    key: "handleChange",
+    value: function handleChange(e) {
+      var name = e.target.name;
+      var value = e.target.value;
+      this.setState(_defineProperty({}, name, value));
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      var missingFields = Object.keys(this.state).some(function (key) {
+        return _this2.state[key] === '';
+      });
+
+      if (missingFields) {
+        console.log('Error: You must fill out the entire form');
+      } else {
+        var data = JSON.stringify(this.state);
+        fetch("/addNewOrder/".concat(this.props.ticker), {
+          method: 'POST',
+          body: data,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this2.props.handleUpdate(data);
+        });
+      }
+
+      e.target.reset();
+      this.setState({
+        side: '',
+        price: '',
+        shareAmount: ''
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_reactBootstrap.Form, {
+        inline: true,
+        onSubmit: this.handleSubmit
+      }, _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.ControlLabel, null, "Side"), ' ', _react.default.createElement(_reactBootstrap.FormControl, {
+        componentClass: "select",
+        name: "side",
+        onChange: this.handleChange
+      }, _react.default.createElement("option", {
+        value: ""
+      }, "select a side"), _react.default.createElement("option", {
+        value: "buy"
+      }, "Buy"), _react.default.createElement("option", {
+        value: "sell"
+      }, "Sell"))), ' ', _react.default.createElement(_reactBootstrap.FormGroup, {
+        controlId: "formInlinePrice"
+      }, _react.default.createElement(_reactBootstrap.ControlLabel, null, "Price"), ' ', _react.default.createElement(_reactBootstrap.FormControl, {
+        type: "number",
+        step: "0.01",
+        min: "0",
+        name: "price",
+        onChange: this.handleChange
+      })), ' ', _react.default.createElement(_reactBootstrap.FormGroup, {
+        controlId: "formInlineShareAmount"
+      }, _react.default.createElement(_reactBootstrap.ControlLabel, null, "# of Shares"), ' ', _react.default.createElement(_reactBootstrap.FormControl, {
+        type: "number",
+        min: "0",
+        name: "shareAmount",
+        onChange: this.handleChange
+      })), ' ', _react.default.createElement(_reactBootstrap.Button, {
+        type: "submit"
+      }, "Submit"));
+    }
+  }]);
+
+  return OrderForm;
+}(_react.Component);
+
+var _default = OrderForm;
+exports.default = _default;
+},{"react":"../../node_modules/react/index.js","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js"}],"../client/components/TradeBook.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _OrderForm = _interopRequireDefault(require("./OrderForm"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+// import Graph from './Graph';
+var TradeBook =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(TradeBook, _Component);
+
+  function TradeBook(props) {
+    var _this;
+
+    _classCallCheck(this, TradeBook);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TradeBook).call(this, props));
+    _this.state = {
+      buy: {},
+      sell: {},
+      executed: [],
+      count: 0
+    };
+    _this.handleBookUpdate = _this.handleBookUpdate.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+
+  _createClass(TradeBook, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch("/tradeBook/".concat(this.props.ticker)).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this2.setState({
+          buy: data.buy,
+          sell: data.sell,
+          executed: data.executed
+        }, function () {
+          if (_this2.state.executed.length > _this2.state.count) {
+            _this2.props.handleExecutes(_this2.state.executed);
+
+            _this2.setState({
+              count: _this2.state.executed.length
+            });
+          }
+        });
+      });
+    }
+  }, {
+    key: "handleBookUpdate",
+    value: function handleBookUpdate(data) {
+      var _this3 = this;
+
+      this.setState({
+        buy: data.buy,
+        sell: data.sell,
+        executed: data.executed
+      }, function () {
+        console.log(_this3.state);
+
+        if (_this3.state.executed.length > _this3.state.count) {
+          _this3.props.handleExecutes(_this3.state.executed);
+
+          _this3.setState({
+            count: _this3.state.executed.length
+          });
+        }
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", null, _react.default.createElement("h2", null, this.props.ticker), _react.default.createElement(_OrderForm.default, {
+        ticker: this.props.ticker,
+        handleUpdate: this.handleBookUpdate
+      }));
+    }
+  }]);
+
+  return TradeBook;
+}(_react.Component);
+
+var _default = TradeBook;
+exports.default = _default;
+},{"react":"../../node_modules/react/index.js","./OrderForm":"../client/components/OrderForm.jsx"}],"../client/components/ExecutesTable.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43615,14 +43631,19 @@ var ExecutesTable = function ExecutesTable(props) {
   var columns = ['Timestamp', 'Ticker', 'Price', '# of Shares'];
   var rows = props.tableData;
   console.log(rows);
-  return _react.default.createElement(_reactBootstrap.Table, null, _react.default.createElement("thead", null, _react.default.createElement("tr", null, columns.map(function (column) {
+  return _react.default.createElement(_reactBootstrap.Table, {
+    striped: true,
+    bordered: true,
+    condensed: true,
+    hover: true
+  }, _react.default.createElement("thead", null, _react.default.createElement("tr", null, columns.map(function (column) {
     return _react.default.createElement("th", {
       key: column
     }, column);
-  }))), _react.default.createElement("tbody", null, rows.map(function (row) {
+  }))), _react.default.createElement("tbody", null, rows.map(function (row, i) {
     return _react.default.createElement("tr", {
-      key: row.timestamp
-    }, _react.default.createElement("td", null, row.timestamp), _react.default.createElement("td", null, row.ticker), _react.default.createElement("td", null, row.price), _react.default.createElement("td", null, row.shares));
+      key: "".concat(row.timestamp, ":").concat(i)
+    }, _react.default.createElement("td", null, row.timestamp), _react.default.createElement("td", null, row.ticker), _react.default.createElement("td", null, "$", row.price.toFixed(2)), _react.default.createElement("td", null, row.shares));
   })));
 };
 
@@ -43753,7 +43774,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63272" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64142" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

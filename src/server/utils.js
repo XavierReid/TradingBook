@@ -22,7 +22,10 @@ class Book {
     }
 
     addOrder(order) {
-        if (this[order.side].topOfTheBook.length === 0) {
+        if (
+            this.buy.topOfTheBook.length === 0 &&
+            this.sell.topOfTheBook.length === 0
+        ) {
             this[order.side].topOfTheBook.push(order.price);
             this.restShares(order);
         } else {
@@ -107,12 +110,12 @@ const seed = book => {
     let order4 = new Order(ticker, 'buy', 101.7, 100);
     let order5 = new Order(ticker, 'buy', 101.6, 100);
     let order6 = new Order(ticker, 'sell', 101.6, 200);
-    book.addOrder(order1);
-    book.addOrder(order2);
+    // book.addOrder(order1);
+    // book.addOrder(order2);
     book.addOrder(order3);
     book.addOrder(order4);
-    book.addOrder(order5);
-    book.addOrder(order6);
+    // book.addOrder(order5);
+    // book.addOrder(order6);
 };
 
 // const book = new Book('AAPL');
