@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import OrderForm from './OrderForm';
+// import Graph from './Graph';
 
 class TradeBook extends Component {
     constructor(props) {
@@ -22,7 +23,9 @@ class TradeBook extends Component {
                         executed: data.executed
                     },
                     () => {
-                        console.log(this.state);
+                        if (this.state.executed.length > 0) {
+                            this.props.handleExecutes(this.state.executed);
+                        }
                     }
                 );
             });
@@ -36,7 +39,9 @@ class TradeBook extends Component {
                 executed: data.executed
             },
             () => {
-                console.log(this.state);
+                if (this.state.executed.length > 0) {
+                    this.props.handleExecutes(this.state.executed);
+                }
             }
         );
     }
@@ -45,6 +50,7 @@ class TradeBook extends Component {
         return (
             <div>
                 <h2>{this.props.ticker}</h2>
+                {/* <Graph /> */}
                 <OrderForm
                     ticker={this.props.ticker}
                     handleUpdate={this.handleBookUpdate}

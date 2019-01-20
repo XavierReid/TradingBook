@@ -115,9 +115,9 @@ const seed = book => {
     book.addOrder(order6);
 };
 
-const book = new Book('AAPL');
-seed(book);
-console.log(book);
+// const book = new Book('AAPL');
+// seed(book);
+// console.log(book);
 
 module.exports = {
     Order: Order,
