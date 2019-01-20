@@ -7,6 +7,8 @@ const { TradeBook, Order, seed } = require('./utils'),
 // Seed
 const Books = [GOOGLE, FACEBOOK, ORACLE];
 // seed(GOOGLE);
+// seed(FACEBOOK);
+// seed(ORACLE);
 
 // Server Setup
 const express = require('express'),

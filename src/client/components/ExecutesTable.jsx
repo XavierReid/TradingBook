@@ -4,7 +4,6 @@ import { Table } from 'react-bootstrap';
 const ExecutesTable = props => {
     const columns = ['Timestamp', 'Ticker', 'Price', '# of Shares'];
     const rows = props.tableData;
-    console.log(rows);
 
     return (
         <Table striped bordered condensed hover>

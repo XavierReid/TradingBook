@@ -25,10 +25,12 @@
     "dependencies": {
         "body-parser": "^1.18.3",
         "express": "^4.16.4",
+        "rea": "0.0.1",
         "reac": "0.0.0",
         "react": "^16.7.0",
         "react-bootstrap": "^0.32.4",
-        "react-dom": "^16.7.0"
+        "react-dom": "^16.7.0",
+        "recharts": "^1.4.2"
     },
     "devDependencies": {
         "babel-core": "^6.26.3",

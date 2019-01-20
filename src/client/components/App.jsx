@@ -12,7 +12,6 @@ class App extends Component {
         this.handleExecutes = this.handleExecutes.bind(this);
         this.handleNavClick = this.handleNavClick.bind(this);
     }
-
     handleExecutes(data) {
         const length = data.length;
         const latest = data[length - 1];
