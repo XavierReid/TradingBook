@@ -1,8 +1,12 @@
 // TradeBook and Order classes
-const { TradeBook, Order } = require('./utils'),
+const { TradeBook, Order, seed } = require('./utils'),
     GOOGLE = new TradeBook('GOOG'),
     FACEBOOK = new TradeBook('FB'),
     ORACLE = new TradeBook('ORCL');
+
+// Seed
+const Books = [GOOGLE, FACEBOOK, ORACLE];
+seed(GOOGLE);
 
 // Server Setup
 const express = require('express'),
@@ -14,17 +18,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Routes
-
-app.get('/', (req, res) => {
-    res.send(GOOGLE);
+app.get('/tradeBook/:ticker', (req, res) => {
+    const ticker = req.params.ticker;
+    const book = Books.find(b => b.ticker === ticker);
+    res.send(book);
 });
 
-app.post('/addNewOrder', (req, res) => {
+app.post('/addNewOrder/:ticker', (req, res) => {
     console.log('received new order');
+    const ticker = req.params.ticker;
     const { side, price, shareAmount } = req.body;
-    const order = new Order('GOOG', side, Number(price), Number(shareAmount)); // hardcode GOOG for now
-    GOOGLE.addOrder(order);
-    res.send(GOOGLE);
+    const order = new Order(ticker, side, Number(price), Number(shareAmount)); // hardcode GOOG for now
+    const book = Books.find(b => b.ticker === ticker);
+    book.addOrder(order);
+    res.send(book);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

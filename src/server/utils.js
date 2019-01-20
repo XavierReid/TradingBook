@@ -29,8 +29,8 @@ class Book {
             if (this.checkOpposite(order)) {
                 this.executeOrder(order);
             } else {
-                this.updateBookOrdering(order);
                 this.restShares(order);
+                this.updateBookOrdering(order);
             }
         }
     }
@@ -47,6 +47,7 @@ class Book {
             }
         } else {
             order.amount -= side.shares[price];
+            this.updateBookOrdering(order);
             this.restShares(order);
             side.topOfTheBook = side.topOfTheBook.slice(1, length);
             delete side.shares[price];
@@ -98,24 +99,28 @@ class Book {
     }
 }
 
-// let apple = new Book('AAPL');
-// let order1 = new Order('AAPL', 'buy', 101.53, 100);
-// let order2 = new Order('AAPL', 'sell', 102.47, 200);
-// let order3 = new Order('AAPL', 'sell', 101.6, 100);
-// let order4 = new Order('AAPL', 'buy', 101.7, 100);
-// let order5 = new Order('AAPL', 'buy', 101.6, 100);
-// let order6 = new Order('AAPL', 'sell', 101.6, 200);
-// apple.addOrder(order1);
-// apple.addOrder(order2);
-// apple.addOrder(order3);
-// apple.addOrder(order4);
-// setTimeout(() => {
-//     apple.addOrder(order5);
-//     apple.addOrder(order6);
-//     console.log(apple);
-// }, 1000);
+const seed = book => {
+    const ticker = book.ticker;
+    let order1 = new Order(ticker, 'buy', 101.53, 100);
+    let order2 = new Order(ticker, 'sell', 102.47, 200);
+    let order3 = new Order(ticker, 'sell', 101.6, 100);
+    let order4 = new Order(ticker, 'buy', 101.7, 100);
+    let order5 = new Order(ticker, 'buy', 101.6, 100);
+    let order6 = new Order(ticker, 'sell', 101.6, 200);
+    book.addOrder(order1);
+    book.addOrder(order2);
+    book.addOrder(order3);
+    book.addOrder(order4);
+    book.addOrder(order5);
+    book.addOrder(order6);
+};
+
+const book = new Book('AAPL');
+seed(book);
+console.log(book);
 
 module.exports = {
     Order: Order,
-    TradeBook: Book
+    TradeBook: Book,
+    seed: seed
 };

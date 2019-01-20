@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import OrderForm from './OrderForm';
+import TradeBook from './TradeBook';
 
 class App extends Component {
     render() {
         return (
             <div>
                 Trading Block!
-                <OrderForm />
+                <TradeBook ticker={'GOOG'} />
             </div>
         );
     }

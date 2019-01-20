@@ -23,7 +23,6 @@ class OrderForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        e.target.reset();
         const missingFields = Object.keys(this.state).some(
             key => this.state[key] === ''
         );
@@ -31,7 +30,7 @@ class OrderForm extends Component {
             console.log('Error: You must fill out the entire form');
         } else {
             const data = JSON.stringify(this.state);
-            fetch('/addNewOrder', {
+            fetch(`/addNewOrder/${this.props.ticker}`, {
                 method: 'POST',
                 body: data,
                 headers: {
@@ -39,8 +38,16 @@ class OrderForm extends Component {
                 }
             })
                 .then(res => res.json())
-                .then(data => console.log(data));
+                .then(data => {
+                    this.props.handleUpdate(data);
+                });
         }
+        e.target.reset();
+        this.setState({
+            side: '',
+            price: '',
+            shareAmount: ''
+        });
     }
 
     render() {
