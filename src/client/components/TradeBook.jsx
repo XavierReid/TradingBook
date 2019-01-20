@@ -57,7 +57,7 @@ class TradeBook extends Component {
     render() {
         return (
             <div>
-                <h2>{this.props.ticker}</h2>
+                <h4>{this.props.ticker}</h4>
                 {/* <Graph /> */}
                 <OrderForm
                     ticker={this.props.ticker}

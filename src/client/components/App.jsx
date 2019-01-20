@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import TradeBook from './TradeBook';
 import ExecutesTable from './ExecutesTable';
+import Header from './Header';
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            executedOrders: []
+            executedOrders: [],
+            toDisplay: 0
         };
         this.handleExecutes = this.handleExecutes.bind(this);
+        this.handleNavClick = this.handleNavClick.bind(this);
     }
 
     handleExecutes(data) {
@@ -20,14 +23,21 @@ class App extends Component {
         });
     }
 
+    handleNavClick(eventKey) {
+        this.setState({ toDisplay: eventKey });
+    }
+
     render() {
+        const display = [
+            null,
+            <TradeBook ticker={'GOOG'} handleExecutes={this.handleExecutes} />,
+            <TradeBook ticker={'FB'} handleExecutes={this.handleExecutes} />,
+            <TradeBook ticker={'ORCL'} handleExecutes={this.handleExecutes} />
+        ];
         return (
             <div>
-                Trading Block!
-                <TradeBook
-                    ticker={'GOOG'}
-                    handleExecutes={this.handleExecutes}
-                />
+                <Header handleSelect={this.handleNavClick} />
+                {display[this.state.toDisplay]}
                 <ExecutesTable tableData={this.state.executedOrders} />
             </div>
         );

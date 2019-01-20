@@ -42,13 +42,16 @@ class Book {
         const side = order.side === 'buy' ? this.sell : this.buy;
         const length = side.topOfTheBook.length;
         const price = side.topOfTheBook[0];
+        let amount;
         if (order.amount <= side.shares[price]) {
+            amount = order.amount;
             side.shares[price] -= order.amount;
             if (side.shares[price] === 0) {
                 side.topOfTheBook = side.topOfTheBook.slice(1, length);
                 delete side.shares[price];
             }
         } else {
+            amount = side.shares[price];
             order.amount -= side.shares[price];
             this.updateBookOrdering(order);
             this.restShares(order);
@@ -65,7 +68,7 @@ class Book {
             timestamp: timestamp(),
             ticker: this.ticker,
             price: price,
-            shares: order.amount
+            shares: amount
         };
         this.executed.push(log);
     }
