@@ -12,7 +12,7 @@ class Header extends Component {
         return (
             <Navbar>
                 <Navbar.Header>
-                    <Navbar.Brand>SFSX Trading Block</Navbar.Brand>
+                    <Navbar.Brand>SFSX Trading Book Visualization</Navbar.Brand>
                     <Nav>
                         <NavDropdown
                             title="Choose a Stock"

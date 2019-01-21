@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import OrderForm from './OrderForm';
 import Chart from './Chart';
+import { PageHeader } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 class TradeBook extends Component {
     constructor(props) {
@@ -12,9 +14,26 @@ class TradeBook extends Component {
             count: 0
         };
         this.handleBookUpdate = this.handleBookUpdate.bind(this);
+        this.getStockData = this.getStockData.bind(this);
+    }
+
+    componentDidUpdate(nextProps) {
+        if (this.props.ticker !== nextProps.ticker) {
+            this.setState({
+                buy: [],
+                sell: [],
+                transactions: [],
+                count: 0
+            });
+            this.getStockData(this.props.ticker);
+        }
     }
     componentDidMount() {
-        fetch(`/tradeBook/${this.props.ticker}`)
+        this.getStockData(this.props.ticker);
+    }
+
+    getStockData(ticker) {
+        fetch(`/tradeBook/${ticker}`)
             .then(res => res.json())
             .then(data => {
                 this.handleBookUpdate(data);
@@ -38,7 +57,7 @@ class TradeBook extends Component {
                 transactions: data.executed
             },
             () => {
-                console.log(this.state);
+                console.log(this.props.ticker, this.state);
                 if (this.state.transactions.length > this.state.count) {
                     this.props.handleExecutes(this.state.transactions);
                     this.setState({
@@ -52,16 +71,28 @@ class TradeBook extends Component {
     render() {
         const { buy, sell } = this.state;
         return (
-            <div>
-                <h4>{this.props.ticker}</h4>
-                {buy.length === 0 && sell.length === 0 ? null : (
-                    <Chart buy={buy} sell={sell} />
-                )}
-                <OrderForm
-                    ticker={this.props.ticker}
-                    handleUpdate={this.handleBookUpdate}
-                />
-            </div>
+            <Grid>
+                <Row>
+                    <PageHeader>
+                        <Col mdOffset={4}>
+                            {this.props.ticker} <small>trade book</small>
+                        </Col>
+                    </PageHeader>
+                </Row>
+                <Row>
+                    <Col mdOffset={1} md={6}>
+                        {buy.length === 0 && sell.length === 0 ? null : (
+                            <Chart buy={buy} sell={sell} />
+                        )}
+                    </Col>
+                </Row>
+                <Row>
+                    <OrderForm
+                        ticker={this.props.ticker}
+                        handleUpdate={this.handleBookUpdate}
+                    />
+                </Row>
+            </Grid>
         );
     }
 }

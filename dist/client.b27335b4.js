@@ -43460,9 +43460,14 @@ function (_Component) {
     key: "render",
     value: function render() {
       return _react.default.createElement(_reactBootstrap.Form, {
-        inline: true,
+        horizontal: true,
         onSubmit: this.handleSubmit
-      }, _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.ControlLabel, null, "Side"), ' ', _react.default.createElement(_reactBootstrap.FormControl, {
+      }, _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.Col, {
+        componentClass: _reactBootstrap.ControlLabel,
+        md: 2
+      }, "Side"), _react.default.createElement(_reactBootstrap.Col, {
+        md: 6
+      }, _react.default.createElement(_reactBootstrap.FormControl, {
         componentClass: "select",
         name: "side",
         onChange: this.handleChange
@@ -43472,24 +43477,37 @@ function (_Component) {
         value: "buy"
       }, "Buy"), _react.default.createElement("option", {
         value: "sell"
-      }, "Sell"))), ' ', _react.default.createElement(_reactBootstrap.FormGroup, {
+      }, "Sell")))), _react.default.createElement(_reactBootstrap.FormGroup, {
         controlId: "formInlinePrice"
-      }, _react.default.createElement(_reactBootstrap.ControlLabel, null, "Price"), ' ', _react.default.createElement(_reactBootstrap.FormControl, {
+      }, _react.default.createElement(_reactBootstrap.Col, {
+        componentClass: _reactBootstrap.ControlLabel,
+        md: 2
+      }, "Price"), _react.default.createElement(_reactBootstrap.Col, {
+        md: 6
+      }, _react.default.createElement(_reactBootstrap.FormControl, {
         type: "number",
         step: "0.01",
         min: "0",
         name: "price",
         onChange: this.handleChange
-      })), ' ', _react.default.createElement(_reactBootstrap.FormGroup, {
+      }))), _react.default.createElement(_reactBootstrap.FormGroup, {
         controlId: "formInlineShareAmount"
-      }, _react.default.createElement(_reactBootstrap.ControlLabel, null, "# of Shares"), ' ', _react.default.createElement(_reactBootstrap.FormControl, {
+      }, _react.default.createElement(_reactBootstrap.Col, {
+        componentClass: _reactBootstrap.ControlLabel,
+        md: 2
+      }, "# of Shares"), _react.default.createElement(_reactBootstrap.Col, {
+        md: 6
+      }, _react.default.createElement(_reactBootstrap.FormControl, {
         type: "number",
         min: "0",
         name: "shareAmount",
         onChange: this.handleChange
-      })), ' ', _react.default.createElement(_reactBootstrap.Button, {
+      }))), _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.Col, {
+        mdOffset: 2,
+        md: 6
+      }, _react.default.createElement(_reactBootstrap.Button, {
         type: "submit"
-      }, "Submit"));
+      }, "Submit"))));
     }
   }]);
 
@@ -94281,41 +94299,47 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Chart = function Chart(props) {
   var sell = props.sell,
       buy = props.buy;
-  var data = sell.map(function (sellData) {
-    return {
-      name: sellData[0],
-      sell: sellData[1]
-    };
-  });
-  buy.forEach(function (buyData) {
-    var found = data.find(function (datapoint) {
-      return datapoint[buyData[0]];
-    });
 
-    if (found) {
-      found.buy = buyData[1];
-    } else {
-      data.push({
-        name: buyData[0],
-        buy: buyData[1]
+  var generate = function generate() {
+    var data = sell.map(function (sellData) {
+      return {
+        name: sellData[0],
+        sell: sellData[1]
+      };
+    });
+    buy.forEach(function (buyData) {
+      var found = data.find(function (datapoint) {
+        return datapoint[buyData[0]];
       });
-    }
-  });
+
+      if (found) {
+        found.buy = buyData[1];
+      } else {
+        data.push({
+          name: buyData[0],
+          buy: buyData[1]
+        });
+      }
+    });
+    return data;
+  };
+
+  var data = generate();
   return _react.default.createElement(_recharts.BarChart, {
     width: 600,
     height: 300,
-    data: data,
-    margin: {
-      top: 5,
-      right: 30,
-      left: 20,
-      bottom: 5
-    }
+    data: data // margin={{ top: 10, right: 0, left: 30, bottom: 10 }}
+
   }, _react.default.createElement(_recharts.CartesianGrid, {
     strokeDasharray: "3 3"
   }), _react.default.createElement(_recharts.XAxis, {
     dataKey: "name"
-  }), _react.default.createElement(_recharts.YAxis, null), _react.default.createElement(_recharts.Tooltip, null), _react.default.createElement(_recharts.Legend, null), _react.default.createElement(_recharts.Bar, {
+  }), _react.default.createElement(_recharts.YAxis, null), _react.default.createElement(_recharts.Tooltip, {
+    wrapperStyle: {
+      width: 100,
+      backgroundColor: '#ccc'
+    }
+  }), _react.default.createElement(_recharts.Legend, null), _react.default.createElement(_recharts.Bar, {
     dataKey: "buy",
     fill: "blue"
   }), _react.default.createElement(_recharts.Bar, {
@@ -94339,6 +94363,8 @@ var _react = _interopRequireWildcard(require("react"));
 var _OrderForm = _interopRequireDefault(require("./OrderForm"));
 
 var _Chart = _interopRequireDefault(require("./Chart"));
+
+var _reactBootstrap = require("react-bootstrap");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -94380,15 +94406,34 @@ function (_Component) {
       count: 0
     };
     _this.handleBookUpdate = _this.handleBookUpdate.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.getStockData = _this.getStockData.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(TradeBook, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(nextProps) {
+      if (this.props.ticker !== nextProps.ticker) {
+        this.setState({
+          buy: [],
+          sell: [],
+          transactions: [],
+          count: 0
+        });
+        this.getStockData(this.props.ticker);
+      }
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      this.getStockData(this.props.ticker);
+    }
+  }, {
+    key: "getStockData",
+    value: function getStockData(ticker) {
       var _this2 = this;
 
-      fetch("/tradeBook/".concat(this.props.ticker)).then(function (res) {
+      fetch("/tradeBook/".concat(ticker)).then(function (res) {
         return res.json();
       }).then(function (data) {
         _this2.handleBookUpdate(data);
@@ -94410,7 +94455,7 @@ function (_Component) {
         sell: sellData,
         transactions: data.executed
       }, function () {
-        console.log(_this3.state);
+        console.log(_this3.props.ticker, _this3.state);
 
         if (_this3.state.transactions.length > _this3.state.count) {
           _this3.props.handleExecutes(_this3.state.transactions);
@@ -94427,13 +94472,18 @@ function (_Component) {
       var _this$state = this.state,
           buy = _this$state.buy,
           sell = _this$state.sell;
-      return _react.default.createElement("div", null, _react.default.createElement("h4", null, this.props.ticker), buy.length === 0 && sell.length === 0 ? null : _react.default.createElement(_Chart.default, {
+      return _react.default.createElement(_reactBootstrap.Grid, null, _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.PageHeader, null, _react.default.createElement(_reactBootstrap.Col, {
+        mdOffset: 4
+      }, this.props.ticker, " ", _react.default.createElement("small", null, "trade book")))), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, {
+        mdOffset: 1,
+        md: 6
+      }, buy.length === 0 && sell.length === 0 ? null : _react.default.createElement(_Chart.default, {
         buy: buy,
         sell: sell
-      }), _react.default.createElement(_OrderForm.default, {
+      }))), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_OrderForm.default, {
         ticker: this.props.ticker,
         handleUpdate: this.handleBookUpdate
-      }));
+      })));
     }
   }]);
 
@@ -94442,7 +94492,7 @@ function (_Component) {
 
 var _default = TradeBook;
 exports.default = _default;
-},{"react":"../../node_modules/react/index.js","./OrderForm":"../client/components/OrderForm.jsx","./Chart":"../client/components/Chart.jsx"}],"../client/components/ExecutesTable.jsx":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","./OrderForm":"../client/components/OrderForm.jsx","./Chart":"../client/components/Chart.jsx","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js"}],"../client/components/ExecutesTable.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -94532,7 +94582,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return _react.default.createElement(_reactBootstrap.Navbar, null, _react.default.createElement(_reactBootstrap.Navbar.Header, null, _react.default.createElement(_reactBootstrap.Navbar.Brand, null, "SFSX Trading Block"), _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.NavDropdown, {
+      return _react.default.createElement(_reactBootstrap.Navbar, null, _react.default.createElement(_reactBootstrap.Navbar.Header, null, _react.default.createElement(_reactBootstrap.Navbar.Brand, null, "SFSX Trading Book Visualization"), _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.NavDropdown, {
         title: "Choose a Stock",
         id: "basic-nav-dropdown",
         eventKey: 0
@@ -94579,6 +94629,8 @@ var _ExecutesTable = _interopRequireDefault(require("./ExecutesTable"));
 
 var _Header = _interopRequireDefault(require("./Header"));
 
+var _reactBootstrap = require("react-bootstrap");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -94624,12 +94676,16 @@ function (_Component) {
   _createClass(App, [{
     key: "handleExecutes",
     value: function handleExecutes(data) {
+      var _this2 = this;
+
       var length = data.length;
       var latest = data[length - 1];
       var executedOrders = this.state.executedOrders;
       executedOrders.push(latest);
       this.setState({
         executedOrders: executedOrders
+      }, function () {
+        console.log(_this2.state.executedOrders);
       });
     }
   }, {
@@ -94642,21 +94698,18 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var display = [null, _react.default.createElement(_TradeBook.default, {
-        ticker: 'GOOG',
-        handleExecutes: this.handleExecutes
-      }), _react.default.createElement(_TradeBook.default, {
-        ticker: 'FB',
-        handleExecutes: this.handleExecutes
-      }), _react.default.createElement(_TradeBook.default, {
-        ticker: 'ORCL',
-        handleExecutes: this.handleExecutes
-      })];
+      var options = ['GOOG', 'FB', 'ORCL'];
+      var toDisplay = this.state.toDisplay;
       return _react.default.createElement("div", null, _react.default.createElement(_Header.default, {
         handleSelect: this.handleNavClick
-      }), display[this.state.toDisplay], _react.default.createElement(_ExecutesTable.default, {
+      }), _react.default.createElement(_reactBootstrap.Grid, null, _react.default.createElement(_reactBootstrap.Row, null, toDisplay === 0 ? null : _react.default.createElement(_TradeBook.default, {
+        ticker: options[toDisplay - 1],
+        handleExecutes: this.handleExecutes
+      })), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, {
+        md: 12
+      }, _react.default.createElement(_ExecutesTable.default, {
         tableData: this.state.executedOrders
-      }));
+      })))));
     }
   }]);
 
@@ -94665,7 +94718,7 @@ function (_Component) {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../../node_modules/react/index.js","./TradeBook":"../client/components/TradeBook.jsx","./ExecutesTable":"../client/components/ExecutesTable.jsx","./Header":"../client/components/Header.jsx"}],"../client/index.js":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","./TradeBook":"../client/components/TradeBook.jsx","./ExecutesTable":"../client/components/ExecutesTable.jsx","./Header":"../client/components/Header.jsx","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js"}],"../client/index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -94708,7 +94761,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58931" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56326" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

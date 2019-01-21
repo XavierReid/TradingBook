@@ -4,7 +4,8 @@ import {
     FormGroup,
     FormControl,
     ControlLabel,
-    Button
+    Button,
+    Col
 } from 'react-bootstrap';
 
 class OrderForm extends Component {
@@ -59,38 +60,54 @@ class OrderForm extends Component {
 
     render() {
         return (
-            <Form inline onSubmit={this.handleSubmit}>
+            <Form horizontal onSubmit={this.handleSubmit}>
                 <FormGroup>
-                    <ControlLabel>Side</ControlLabel>{' '}
-                    <FormControl
-                        componentClass="select"
-                        name="side"
-                        onChange={this.handleChange}>
-                        <option value="">select a side</option>
-                        <option value="buy">Buy</option>
-                        <option value="sell">Sell</option>
-                    </FormControl>
-                </FormGroup>{' '}
+                    <Col componentClass={ControlLabel} md={2}>
+                        Side
+                    </Col>
+                    <Col md={6}>
+                        <FormControl
+                            componentClass="select"
+                            name="side"
+                            onChange={this.handleChange}>
+                            <option value="">select a side</option>
+                            <option value="buy">Buy</option>
+                            <option value="sell">Sell</option>
+                        </FormControl>
+                    </Col>
+                </FormGroup>
                 <FormGroup controlId="formInlinePrice">
-                    <ControlLabel>Price</ControlLabel>{' '}
-                    <FormControl
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        name="price"
-                        onChange={this.handleChange}
-                    />
-                </FormGroup>{' '}
+                    <Col componentClass={ControlLabel} md={2}>
+                        Price
+                    </Col>
+                    <Col md={6}>
+                        <FormControl
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            name="price"
+                            onChange={this.handleChange}
+                        />
+                    </Col>
+                </FormGroup>
                 <FormGroup controlId="formInlineShareAmount">
-                    <ControlLabel># of Shares</ControlLabel>{' '}
-                    <FormControl
-                        type="number"
-                        min="0"
-                        name="shareAmount"
-                        onChange={this.handleChange}
-                    />
-                </FormGroup>{' '}
-                <Button type="submit">Submit</Button>
+                    <Col componentClass={ControlLabel} md={2}>
+                        # of Shares
+                    </Col>
+                    <Col md={6}>
+                        <FormControl
+                            type="number"
+                            min="0"
+                            name="shareAmount"
+                            onChange={this.handleChange}
+                        />
+                    </Col>
+                </FormGroup>
+                <FormGroup>
+                    <Col mdOffset={2} md={6}>
+                        <Button type="submit">Submit</Button>
+                    </Col>
+                </FormGroup>
             </Form>
         );
     }
