@@ -24,12 +24,13 @@ class Share {
         curr -= amount;
         this.total -= amount;
         if (curr <= 0) {
-            this.orders.slice(0, this.orders.length - 1);
+            this.orders = this.orders.slice(0, this.orders.length - 1);
             if (curr < 0) {
                 let excess = Math.abs(curr);
                 this.total += excess;
                 return excess;
             }
+            return 0;
         }
         this.orders[this.orders.length - 1] = curr;
         return 0;
