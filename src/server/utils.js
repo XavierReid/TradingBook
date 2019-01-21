@@ -7,6 +7,39 @@ class Order {
     }
 }
 
+class Share {
+    constructor(price) {
+        this.price = price;
+        this.total = 0;
+        this.orders = [];
+    }
+
+    addToBook(amount) {
+        this.orders.push(amount);
+        this.total += amount;
+    }
+    removeFromBook(amount) {
+        let curr = this.getMostRecent();
+        console.log(curr, amount);
+        curr -= amount;
+        this.total -= amount;
+        if (curr <= 0) {
+            this.orders.slice(0, this.orders.length - 1);
+            if (curr < 0) {
+                let excess = Math.abs(curr);
+                this.total += excess;
+                return excess;
+            }
+        }
+        this.orders[this.orders.length - 1] = curr;
+        return 0;
+    }
+
+    getMostRecent() {
+        return this.orders[this.orders.length - 1];
+    }
+}
+
 class Book {
     constructor(ticker) {
         this.ticker = ticker;
@@ -18,7 +51,6 @@ class Book {
             topOfTheBook: [],
             shares: {}
         };
-        // this.executed = [];
     }
 
     addOrder(order) {
@@ -43,19 +75,20 @@ class Book {
         const side = order.side === 'buy' ? this.sell : this.buy;
         const length = side.topOfTheBook.length;
         const price = side.topOfTheBook[0];
+        const share = side.shares[price];
         let amount;
-        if (order.amount <= side.shares[price]) {
+        if (order.amount <= share.getMostRecent()) {
             amount = order.amount;
-            side.shares[price] -= order.amount;
-            if (side.shares[price] === 0) {
-                side.topOfTheBook = side.topOfTheBook.slice(1, length);
-                delete side.shares[price];
-            }
         } else {
-            amount = side.shares[price];
-            order.amount -= side.shares[price];
+            amount = share.getMostRecent();
+        }
+        let leftovers = share.removeFromBook(order.amount);
+        if (leftovers > 0) {
+            order.amount = leftovers;
             this.updateBookOrdering(order);
             this.restShares(order);
+        }
+        if (share.total === 0) {
             side.topOfTheBook = side.topOfTheBook.slice(1, length);
             delete side.shares[price];
         }
@@ -71,7 +104,6 @@ class Book {
             price: price,
             shares: amount
         };
-        // this.executed.push(log);
         return log;
     }
 
@@ -100,9 +132,11 @@ class Book {
 
     restShares(order) {
         if (this[order.side].shares[order.price]) {
-            this[order.side].shares[order.price] += order.amount;
+            this[order.side].shares[order.price].addToBook(order.amount);
         } else {
-            this[order.side].shares[order.price] = order.amount;
+            const share = new Share(order.price);
+            share.addToBook(order.amount);
+            this[order.side].shares[order.price] = share;
         }
     }
 }
@@ -125,7 +159,8 @@ const seed = book => {
 
 // const book = new Book('AAPL');
 // seed(book);
-// console.log(book);
+// console.log(book.buy.shares);
+// console.log(book.sell.shares);
 
 module.exports = {
     Order: Order,

@@ -14,8 +14,6 @@ class App extends Component {
         this.handleNavClick = this.handleNavClick.bind(this);
     }
     handleExecutes(transaction) {
-        // const length = data.length;
-        // const latest = data[length - 1];
         const { executedOrders } = this.state;
         executedOrders.push(transaction);
         this.setState(

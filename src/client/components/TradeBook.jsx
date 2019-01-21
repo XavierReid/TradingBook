@@ -41,9 +41,7 @@ class TradeBook extends Component {
     }
 
     handleBookUpdate(data) {
-        const { book, transaction } = data;
-        console.log(data);
-        
+        const { book, transaction } = data;        
         const sellData = Object.keys(book.sell.shares).map(key => [
             Number(key).toFixed(2),
             book.sell.shares[key]
@@ -57,16 +55,9 @@ class TradeBook extends Component {
             {
                 buy: buyData,
                 sell: sellData
-                // transactions: data.executed
             },
             () => {
                 console.log(this.props.ticker, this.state);
-                // if (this.state.transactions.length > this.state.count) {
-                //     this.props.handleExecutes(this.state.transactions);
-                //     this.setState({
-                //         count: this.state.transactions.length
-                //     });
-                // }
                 if (transaction) {
                     this.props.handleExecutes(transaction);
                 }

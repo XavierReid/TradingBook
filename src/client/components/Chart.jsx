@@ -15,16 +15,16 @@ const Chart = props => {
     const generate = () => {
         const data = sell.map(sellData => ({
             name: sellData[0],
-            sell: sellData[1]
+            sell: sellData[1].total
         }));
         buy.forEach(buyData => {
             let found = data.find(datapoint => datapoint[buyData[0]]);
             if (found) {
-                found.buy = buyData[1];
+                found.buy = buyData[1].total;
             } else {
                 data.push({
                     name: buyData[0],
-                    buy: buyData[1]
+                    buy: buyData[1].total
                 });
             }
         });

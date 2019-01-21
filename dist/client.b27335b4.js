@@ -43445,8 +43445,6 @@ function (_Component) {
         }).then(function (res) {
           return res.json();
         }).then(function (data) {
-          console.log(data);
-
           _this2.props.handleUpdate(data);
         });
       }
@@ -94306,7 +94304,7 @@ var Chart = function Chart(props) {
     var data = sell.map(function (sellData) {
       return {
         name: sellData[0],
-        sell: sellData[1]
+        sell: sellData[1].total
       };
     });
     buy.forEach(function (buyData) {
@@ -94315,11 +94313,11 @@ var Chart = function Chart(props) {
       });
 
       if (found) {
-        found.buy = buyData[1];
+        found.buy = buyData[1].total;
       } else {
         data.push({
           name: buyData[0],
-          buy: buyData[1]
+          buy: buyData[1].total
         });
       }
     });
@@ -94448,7 +94446,6 @@ function (_Component) {
 
       var book = data.book,
           transaction = data.transaction;
-      console.log(data);
       var sellData = Object.keys(book.sell.shares).map(function (key) {
         return [Number(key).toFixed(2), book.sell.shares[key]];
       });
@@ -94457,15 +94454,9 @@ function (_Component) {
       });
       this.setState({
         buy: buyData,
-        sell: sellData // transactions: data.executed
-
+        sell: sellData
       }, function () {
-        console.log(_this3.props.ticker, _this3.state); // if (this.state.transactions.length > this.state.count) {
-        //     this.props.handleExecutes(this.state.transactions);
-        //     this.setState({
-        //         count: this.state.transactions.length
-        //     });
-        // }
+        console.log(_this3.props.ticker, _this3.state);
 
         if (transaction) {
           _this3.props.handleExecutes(transaction);
@@ -94513,7 +94504,7 @@ var _reactBootstrap = require("react-bootstrap");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ExecutesTable = function ExecutesTable(props) {
-  var columns = ['Timestamp', 'Ticker', 'Price', '# of Shares'];
+  var columns = ['Timestamp', 'Ticker', 'Price', 'Shares'];
   var rows = props.tableData;
   return _react.default.createElement(_reactBootstrap.Table, {
     striped: true,
@@ -94684,8 +94675,6 @@ function (_Component) {
     value: function handleExecutes(transaction) {
       var _this2 = this;
 
-      // const length = data.length;
-      // const latest = data[length - 1];
       var executedOrders = this.state.executedOrders;
       executedOrders.push(transaction);
       this.setState({
@@ -94767,7 +94756,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56326" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58075" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

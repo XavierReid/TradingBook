@@ -46,9 +46,7 @@ class OrderForm extends Component {
                 }
             })
                 .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    
+                .then(data => {                    
                     this.props.handleUpdate(data);
                 });
         }

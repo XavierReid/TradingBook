@@ -3,12 +3,7 @@ const { TradeBook, Order, seed } = require('./utils'),
     GOOGLE = new TradeBook('GOOG'),
     FACEBOOK = new TradeBook('FB'),
     ORACLE = new TradeBook('ORCL');
-
-// Seed
 const Books = [GOOGLE, FACEBOOK, ORACLE];
-// seed(GOOGLE);
-// seed(FACEBOOK);
-// seed(ORACLE);
 
 // Server Setup
 const express = require('express'),

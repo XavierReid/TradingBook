@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 
 const ExecutesTable = props => {
-    const columns = ['Timestamp', 'Ticker', 'Price', '# of Shares'];
+    const columns = ['Timestamp', 'Ticker', 'Price', 'Shares'];
     const rows = props.tableData;
 
     return (
