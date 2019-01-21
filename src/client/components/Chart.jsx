@@ -10,10 +10,6 @@ import {
     Legend
 } from 'recharts';
 
-function handleClick(e) {
-    console.log(e);
-}
-
 function generate(buy, sell) {
     const data = sell.map(sellData => ({
         name: sellData[0],
@@ -38,7 +34,7 @@ const Chart = props => {
     const data = generate(buy, sell);
 
     return (
-        <BarChart width={600} height={300} data={data}>
+        <BarChart width={500} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -46,13 +42,13 @@ const Chart = props => {
                 wrapperStyle={{
                     backgroundColor: 'white',
                     padding: 5,
-                    color: "gray"
+                    color: 'gray'
                 }}
-                content={<RestingOrders sell={sell} buy={buy}/>}
+                content={<RestingOrders sell={sell} buy={buy} />}
             />
             <Legend />
-            <Bar dataKey="buy" fill="blue" onClick={handleClick} />
-            <Bar dataKey="sell" fill="red" onClick={handleClick} />
+            <Bar dataKey="buy" fill="blue" />
+            <Bar dataKey="sell" fill="red" />
         </BarChart>
     );
 };

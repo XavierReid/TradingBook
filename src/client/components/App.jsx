@@ -31,16 +31,22 @@ class App extends Component {
     }
 
     render() {
-        const options = ['GOOG', 'FB', 'ORCL'];
         const { toDisplay } = this.state;
         return (
             <div>
-                <Header handleSelect={this.handleNavClick} />
-                <Grid>
+                <Grid fluid>
+                    <Row>
+                        <Col xs={12} md={12}>
+                            <Header
+                                options={this.props.options}
+                                handleSelect={this.handleNavClick}
+                            />
+                        </Col>
+                    </Row>
                     <Row>
                         {toDisplay === 0 ? null : (
                             <TradeBook
-                                ticker={options[toDisplay - 1]}
+                                company={this.props.options[toDisplay - 1]}
                                 handleExecutes={this.handleExecutes}
                             />
                         )}

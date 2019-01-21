@@ -10,9 +10,12 @@ class Header extends Component {
     }
     render() {
         return (
-            <Navbar>
+            <Navbar fluid collapseOnSelect>
                 <Navbar.Header>
-                    <Navbar.Brand>SFSX Trading Book Visualization</Navbar.Brand>
+                    <Navbar.Brand>SFSX Trade Book Visualization</Navbar.Brand>
+                    <Navbar.Toggle />
+                </Navbar.Header>
+                <Navbar.Collapse>
                     <Nav>
                         <NavDropdown
                             title="Choose a Stock"
@@ -21,21 +24,17 @@ class Header extends Component {
                             <MenuItem eventKey={0} onSelect={this.handleSelect}>
                                 ...{' '}
                             </MenuItem>
-                            <MenuItem divider />
-                            <MenuItem eventKey={1} onSelect={this.handleSelect}>
-                                Google
-                            </MenuItem>
-                            <MenuItem divider />
-                            <MenuItem eventKey={2} onSelect={this.handleSelect}>
-                                Facebook
-                            </MenuItem>
-                            <MenuItem divider />
-                            <MenuItem eventKey={3} onSelect={this.handleSelect}>
-                                Oracle
-                            </MenuItem>
+                            {this.props.options.map((company, i) => (
+                                <MenuItem
+                                    key={company.ticker}
+                                    eventKey={i + 1}
+                                    onSelect={this.handleSelect}>
+                                    {company.name}
+                                </MenuItem>
+                            ))}
                         </NavDropdown>
                     </Nav>
-                </Navbar.Header>
+                </Navbar.Collapse>
             </Navbar>
         );
     }

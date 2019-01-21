@@ -16,16 +16,18 @@ class TradeBook extends Component {
     }
 
     componentDidUpdate(nextProps) {
-        if (this.props.ticker !== nextProps.ticker) {
+        console.log(nextProps);
+        
+        if (this.props.company.ticker !== nextProps.company.ticker) {
             this.setState({
                 buy: [],
                 sell: []
             });
-            this.getStockData(this.props.ticker);
+            this.getStockData(this.props.company.ticker);
         }
     }
     componentDidMount() {
-        this.getStockData(this.props.ticker);
+        this.getStockData(this.props.company.ticker);
     }
 
     getStockData(ticker) {
@@ -37,7 +39,7 @@ class TradeBook extends Component {
     }
 
     handleBookUpdate(data) {
-        const { book, transaction } = data;        
+        const { book, transaction } = data;
         const sellData = Object.keys(book.sell.shares).map(key => [
             Number(key).toFixed(2),
             book.sell.shares[key]
@@ -53,7 +55,7 @@ class TradeBook extends Component {
                 sell: sellData
             },
             () => {
-                console.log(this.props.ticker, this.state);
+                console.log(this.props.company.ticker, this.state);
                 if (transaction) {
                     this.props.handleExecutes(transaction);
                 }
@@ -67,23 +69,22 @@ class TradeBook extends Component {
             <Grid>
                 <Row>
                     <PageHeader>
-                        <Col mdOffset={4}>
-                            {this.props.ticker} <small>trade book</small>
-                        </Col>
+                        {this.props.company.name} ({this.props.company.ticker}){' '}
+                        <small>trade book</small>
                     </PageHeader>
                 </Row>
                 <Row>
-                    <Col mdOffset={1} md={6}>
+                    <Col sm={12} md={6}>
                         {buy.length === 0 && sell.length === 0 ? null : (
                             <Chart buy={buy} sell={sell} />
                         )}
                     </Col>
-                </Row>
-                <Row>
-                    <OrderForm
-                        ticker={this.props.ticker}
-                        handleUpdate={this.handleBookUpdate}
-                    />
+                    <Col sm={12} mdOffset={1} md={5}>
+                        <OrderForm
+                            ticker={this.props.company.ticker}
+                            handleUpdate={this.handleBookUpdate}
+                        />
+                    </Col>
                 </Row>
             </Grid>
         );

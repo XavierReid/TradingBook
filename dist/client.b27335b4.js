@@ -43408,14 +43408,31 @@ function (_Component) {
     _this.state = {
       side: '',
       price: '',
-      shareAmount: ''
+      shareAmount: '',
+      show: false
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleDismiss = _this.handleDismiss.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleShow = _this.handleShow.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(OrderForm, [{
+    key: "handleShow",
+    value: function handleShow() {
+      this.setState({
+        show: true
+      });
+    }
+  }, {
+    key: "handleDismiss",
+    value: function handleDismiss() {
+      this.setState({
+        show: false
+      });
+    }
+  }, {
     key: "handleChange",
     value: function handleChange(e) {
       var name = e.target.name;
@@ -43428,12 +43445,14 @@ function (_Component) {
       var _this2 = this;
 
       e.preventDefault();
+      this.handleDismiss();
       var missingFields = Object.keys(this.state).some(function (key) {
         return _this2.state[key] === '';
       });
 
       if (missingFields) {
         console.log('Error: You must fill out the entire form');
+        this.handleShow();
       } else {
         var data = JSON.stringify(this.state);
         fetch("/addNewOrder/".concat(this.props.ticker), {
@@ -43459,7 +43478,10 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return _react.default.createElement(_reactBootstrap.Form, {
+      return _react.default.createElement("div", null, !this.state.show ? null : _react.default.createElement(_reactBootstrap.Alert, {
+        bsStyle: "danger",
+        onDismiss: this.handleDismiss
+      }, _react.default.createElement("h4", null, "Error: You must fill out the entire form!!!"), _react.default.createElement("p", null, "A side wasn't selected, a price wasn't determined, and/or an amount wasn't chosen.")), _react.default.createElement(_reactBootstrap.Form, {
         horizontal: true,
         onSubmit: this.handleSubmit
       }, _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.Col, {
@@ -43507,7 +43529,7 @@ function (_Component) {
         md: 6
       }, _react.default.createElement(_reactBootstrap.Button, {
         type: "submit"
-      }, "Submit"))));
+      }, "Submit")))));
     }
   }]);
 
@@ -94348,10 +94370,6 @@ var _recharts = require("recharts");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function handleClick(e) {
-  console.log(e);
-}
-
 function generate(buy, sell) {
   var data = sell.map(function (sellData) {
     return {
@@ -94381,7 +94399,7 @@ var Chart = function Chart(props) {
       buy = props.buy;
   var data = generate(buy, sell);
   return _react.default.createElement(_recharts.BarChart, {
-    width: 600,
+    width: 500,
     height: 300,
     data: data
   }, _react.default.createElement(_recharts.CartesianGrid, {
@@ -94392,7 +94410,7 @@ var Chart = function Chart(props) {
     wrapperStyle: {
       backgroundColor: 'white',
       padding: 5,
-      color: "gray"
+      color: 'gray'
     },
     content: _react.default.createElement(_RestingOrders.default, {
       sell: sell,
@@ -94400,12 +94418,10 @@ var Chart = function Chart(props) {
     })
   }), _react.default.createElement(_recharts.Legend, null), _react.default.createElement(_recharts.Bar, {
     dataKey: "buy",
-    fill: "blue",
-    onClick: handleClick
+    fill: "blue"
   }), _react.default.createElement(_recharts.Bar, {
     dataKey: "sell",
-    fill: "red",
-    onClick: handleClick
+    fill: "red"
   }));
 };
 
@@ -94472,18 +94488,20 @@ function (_Component) {
   _createClass(TradeBook, [{
     key: "componentDidUpdate",
     value: function componentDidUpdate(nextProps) {
-      if (this.props.ticker !== nextProps.ticker) {
+      console.log(nextProps);
+
+      if (this.props.company.ticker !== nextProps.company.ticker) {
         this.setState({
           buy: [],
           sell: []
         });
-        this.getStockData(this.props.ticker);
+        this.getStockData(this.props.company.ticker);
       }
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.getStockData(this.props.ticker);
+      this.getStockData(this.props.company.ticker);
     }
   }, {
     key: "getStockData",
@@ -94513,7 +94531,7 @@ function (_Component) {
         buy: buyData,
         sell: sellData
       }, function () {
-        console.log(_this3.props.ticker, _this3.state);
+        console.log(_this3.props.company.ticker, _this3.state);
 
         if (transaction) {
           _this3.props.handleExecutes(transaction);
@@ -94526,18 +94544,20 @@ function (_Component) {
       var _this$state = this.state,
           buy = _this$state.buy,
           sell = _this$state.sell;
-      return _react.default.createElement(_reactBootstrap.Grid, null, _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.PageHeader, null, _react.default.createElement(_reactBootstrap.Col, {
-        mdOffset: 4
-      }, this.props.ticker, " ", _react.default.createElement("small", null, "trade book")))), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, {
-        mdOffset: 1,
+      return _react.default.createElement(_reactBootstrap.Grid, null, _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.PageHeader, null, this.props.company.name, " (", this.props.company.ticker, ")", ' ', _react.default.createElement("small", null, "trade book"))), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, {
+        sm: 12,
         md: 6
       }, buy.length === 0 && sell.length === 0 ? null : _react.default.createElement(_Chart.default, {
         buy: buy,
         sell: sell
-      }))), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_OrderForm.default, {
-        ticker: this.props.ticker,
+      })), _react.default.createElement(_reactBootstrap.Col, {
+        sm: 12,
+        mdOffset: 1,
+        md: 5
+      }, _react.default.createElement(_OrderForm.default, {
+        ticker: this.props.company.ticker,
         handleUpdate: this.handleBookUpdate
-      })));
+      }))));
     }
   }]);
 
@@ -94636,29 +94656,25 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return _react.default.createElement(_reactBootstrap.Navbar, null, _react.default.createElement(_reactBootstrap.Navbar.Header, null, _react.default.createElement(_reactBootstrap.Navbar.Brand, null, "SFSX Trading Book Visualization"), _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.NavDropdown, {
+      var _this2 = this;
+
+      return _react.default.createElement(_reactBootstrap.Navbar, {
+        fluid: true,
+        collapseOnSelect: true
+      }, _react.default.createElement(_reactBootstrap.Navbar.Header, null, _react.default.createElement(_reactBootstrap.Navbar.Brand, null, "SFSX Trade Book Visualization"), _react.default.createElement(_reactBootstrap.Navbar.Toggle, null)), _react.default.createElement(_reactBootstrap.Navbar.Collapse, null, _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.NavDropdown, {
         title: "Choose a Stock",
         id: "basic-nav-dropdown",
         eventKey: 0
       }, _react.default.createElement(_reactBootstrap.MenuItem, {
         eventKey: 0,
         onSelect: this.handleSelect
-      }, "...", ' '), _react.default.createElement(_reactBootstrap.MenuItem, {
-        divider: true
-      }), _react.default.createElement(_reactBootstrap.MenuItem, {
-        eventKey: 1,
-        onSelect: this.handleSelect
-      }, "Google"), _react.default.createElement(_reactBootstrap.MenuItem, {
-        divider: true
-      }), _react.default.createElement(_reactBootstrap.MenuItem, {
-        eventKey: 2,
-        onSelect: this.handleSelect
-      }, "Facebook"), _react.default.createElement(_reactBootstrap.MenuItem, {
-        divider: true
-      }), _react.default.createElement(_reactBootstrap.MenuItem, {
-        eventKey: 3,
-        onSelect: this.handleSelect
-      }, "Oracle")))));
+      }, "...", ' '), this.props.options.map(function (company, i) {
+        return _react.default.createElement(_reactBootstrap.MenuItem, {
+          key: company.ticker,
+          eventKey: i + 1,
+          onSelect: _this2.handleSelect
+        }, company.name);
+      })))));
     }
   }]);
 
@@ -94750,12 +94766,17 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var options = ['GOOG', 'FB', 'ORCL'];
       var toDisplay = this.state.toDisplay;
-      return _react.default.createElement("div", null, _react.default.createElement(_Header.default, {
+      return _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.Grid, {
+        fluid: true
+      }, _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, {
+        xs: 12,
+        md: 12
+      }, _react.default.createElement(_Header.default, {
+        options: this.props.options,
         handleSelect: this.handleNavClick
-      }), _react.default.createElement(_reactBootstrap.Grid, null, _react.default.createElement(_reactBootstrap.Row, null, toDisplay === 0 ? null : _react.default.createElement(_TradeBook.default, {
-        ticker: options[toDisplay - 1],
+      }))), _react.default.createElement(_reactBootstrap.Row, null, toDisplay === 0 ? null : _react.default.createElement(_TradeBook.default, {
+        company: this.props.options[toDisplay - 1],
         handleExecutes: this.handleExecutes
       })), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, {
         md: 12
@@ -94781,7 +94802,20 @@ var _App = _interopRequireDefault(require("./components/App"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom.default.render(_react.default.createElement(_App.default, null), document.querySelector('#app'));
+var options = [{
+  name: 'Google',
+  ticker: 'GOOG'
+}, {
+  name: 'Facebook',
+  ticker: 'FB'
+}, {
+  name: 'Oracle',
+  ticker: 'ORCL'
+}];
+
+_reactDom.default.render(_react.default.createElement(_App.default, {
+  options: options
+}), document.querySelector('#app'));
 
 if (module.hot) {
   module.hot.accept();
@@ -94813,7 +94847,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52502" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51696" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
