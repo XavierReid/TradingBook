@@ -43516,7 +43516,57 @@ function (_Component) {
 
 var _default = OrderForm;
 exports.default = _default;
-},{"react":"../../node_modules/react/index.js","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js"}],"../../node_modules/recharts/node_modules/core-js/modules/_global.js":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js"}],"../client/components/RestingOrders.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RestingOrders = function RestingOrders(props) {
+  var active = props.active;
+
+  if (active) {
+    var label = props.label,
+        sell = props.sell,
+        buy = props.buy,
+        payload = props.payload;
+    var dataKey = payload[0].dataKey;
+    var orders;
+    var share;
+
+    if (dataKey === 'sell') {
+      share = sell.find(function (shares) {
+        return shares[0] === label;
+      });
+      orders = share[1].orders;
+    } else {
+      share = buy.find(function (shares) {
+        return shares[0] === label;
+      });
+      orders = share[1].orders;
+    }
+
+    return _react.default.createElement("div", {
+      className: "custom-tooltip"
+    }, _react.default.createElement("p", null, "$", label, " : ", payload[0].value, " available"), _react.default.createElement("p", null, "Current Resting Orders:"), _react.default.createElement("ul", null, orders.map(function (order, i) {
+      return _react.default.createElement("li", {
+        key: i
+      }, order, " shares");
+    })));
+  }
+
+  return null;
+};
+
+var _default = RestingOrders;
+exports.default = _default;
+},{"react":"../../node_modules/react/index.js"}],"../../node_modules/recharts/node_modules/core-js/modules/_global.js":[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
@@ -94292,65 +94342,76 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
+var _RestingOrders = _interopRequireDefault(require("./RestingOrders"));
+
 var _recharts = require("recharts");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function handleClick(e) {
+  console.log(e);
+}
+
+function generate(buy, sell) {
+  var data = sell.map(function (sellData) {
+    return {
+      name: sellData[0],
+      sell: sellData[1].total
+    };
+  });
+  buy.forEach(function (buyData) {
+    var found = data.find(function (datapoint) {
+      return datapoint[buyData[0]];
+    });
+
+    if (found) {
+      found.buy = buyData[1].total;
+    } else {
+      data.push({
+        name: buyData[0],
+        buy: buyData[1].total
+      });
+    }
+  });
+  return data;
+}
+
 var Chart = function Chart(props) {
   var sell = props.sell,
       buy = props.buy;
-
-  var generate = function generate() {
-    var data = sell.map(function (sellData) {
-      return {
-        name: sellData[0],
-        sell: sellData[1].total
-      };
-    });
-    buy.forEach(function (buyData) {
-      var found = data.find(function (datapoint) {
-        return datapoint[buyData[0]];
-      });
-
-      if (found) {
-        found.buy = buyData[1].total;
-      } else {
-        data.push({
-          name: buyData[0],
-          buy: buyData[1].total
-        });
-      }
-    });
-    return data;
-  };
-
-  var data = generate();
+  var data = generate(buy, sell);
   return _react.default.createElement(_recharts.BarChart, {
     width: 600,
     height: 300,
-    data: data // margin={{ top: 10, right: 0, left: 30, bottom: 10 }}
-
+    data: data
   }, _react.default.createElement(_recharts.CartesianGrid, {
     strokeDasharray: "3 3"
   }), _react.default.createElement(_recharts.XAxis, {
     dataKey: "name"
   }), _react.default.createElement(_recharts.YAxis, null), _react.default.createElement(_recharts.Tooltip, {
     wrapperStyle: {
-      width: 100,
-      backgroundColor: '#ccc'
-    }
+      backgroundColor: 'white',
+      padding: 5,
+      color: "gray"
+    },
+    content: _react.default.createElement(_RestingOrders.default, {
+      sell: sell,
+      buy: buy
+    })
   }), _react.default.createElement(_recharts.Legend, null), _react.default.createElement(_recharts.Bar, {
     dataKey: "buy",
-    fill: "blue"
+    fill: "blue",
+    onClick: handleClick
   }), _react.default.createElement(_recharts.Bar, {
     dataKey: "sell",
-    fill: "red"
+    fill: "red",
+    onClick: handleClick
   }));
 };
 
 var _default = Chart;
 exports.default = _default;
-},{"react":"../../node_modules/react/index.js","recharts":"../../node_modules/recharts/es6/index.js"}],"../client/components/TradeBook.jsx":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","./RestingOrders":"../client/components/RestingOrders.jsx","recharts":"../../node_modules/recharts/es6/index.js"}],"../client/components/TradeBook.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -94401,9 +94462,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(TradeBook).call(this, props));
     _this.state = {
       buy: [],
-      sell: [],
-      transactions: [],
-      count: 0
+      sell: []
     };
     _this.handleBookUpdate = _this.handleBookUpdate.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.getStockData = _this.getStockData.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -94416,9 +94475,7 @@ function (_Component) {
       if (this.props.ticker !== nextProps.ticker) {
         this.setState({
           buy: [],
-          sell: [] // transactions: [],
-          // count: 0
-
+          sell: []
         });
         this.getStockData(this.props.ticker);
       }
@@ -94756,7 +94813,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58075" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56026" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

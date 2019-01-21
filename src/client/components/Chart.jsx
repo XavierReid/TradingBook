@@ -1,4 +1,5 @@
 import React from 'react';
+import RestingOrders from './RestingOrders';
 import {
     BarChart,
     Bar,
@@ -6,51 +7,52 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
-    ResponsiveContainer
+    Legend
 } from 'recharts';
+
+function handleClick(e) {
+    console.log(e);
+}
+
+function generate(buy, sell) {
+    const data = sell.map(sellData => ({
+        name: sellData[0],
+        sell: sellData[1].total
+    }));
+    buy.forEach(buyData => {
+        let found = data.find(datapoint => datapoint[buyData[0]]);
+        if (found) {
+            found.buy = buyData[1].total;
+        } else {
+            data.push({
+                name: buyData[0],
+                buy: buyData[1].total
+            });
+        }
+    });
+    return data;
+}
 
 const Chart = props => {
     const { sell, buy } = props;
-    const generate = () => {
-        const data = sell.map(sellData => ({
-            name: sellData[0],
-            sell: sellData[1].total
-        }));
-        buy.forEach(buyData => {
-            let found = data.find(datapoint => datapoint[buyData[0]]);
-            if (found) {
-                found.buy = buyData[1].total;
-            } else {
-                data.push({
-                    name: buyData[0],
-                    buy: buyData[1].total
-                });
-            }
-        });
-        return data;
-    };
-    const data = generate();
+    const data = generate(buy, sell);
 
     return (
-        <BarChart
-            width={600}
-            height={300}
-            data={data}
-            // margin={{ top: 10, right: 0, left: 30, bottom: 10 }}
-        >
+        <BarChart width={600} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip
                 wrapperStyle={{
-                    width: 100,
-                    backgroundColor: '#ccc'
+                    backgroundColor: 'white',
+                    padding: 5,
+                    color: "gray"
                 }}
+                content={<RestingOrders sell={sell} buy={buy}/>}
             />
             <Legend />
-            <Bar dataKey="buy" fill="blue" />
-            <Bar dataKey="sell" fill="red" />
+            <Bar dataKey="buy" fill="blue" onClick={handleClick} />
+            <Bar dataKey="sell" fill="red" onClick={handleClick} />
         </BarChart>
     );
 };
