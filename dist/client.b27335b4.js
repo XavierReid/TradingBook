@@ -43445,6 +43445,8 @@ function (_Component) {
         }).then(function (res) {
           return res.json();
         }).then(function (data) {
+          console.log(data);
+
           _this2.props.handleUpdate(data);
         });
       }
@@ -94416,9 +94418,9 @@ function (_Component) {
       if (this.props.ticker !== nextProps.ticker) {
         this.setState({
           buy: [],
-          sell: [],
-          transactions: [],
-          count: 0
+          sell: [] // transactions: [],
+          // count: 0
+
         });
         this.getStockData(this.props.ticker);
       }
@@ -94444,25 +94446,29 @@ function (_Component) {
     value: function handleBookUpdate(data) {
       var _this3 = this;
 
-      var sellData = Object.keys(data.sell.shares).map(function (key) {
-        return [Number(key).toFixed(2), data.sell.shares[key]];
+      var book = data.book,
+          transaction = data.transaction;
+      console.log(data);
+      var sellData = Object.keys(book.sell.shares).map(function (key) {
+        return [Number(key).toFixed(2), book.sell.shares[key]];
       });
-      var buyData = Object.keys(data.buy.shares).map(function (key) {
-        return [Number(key).toFixed(2), data.buy.shares[key]];
+      var buyData = Object.keys(book.buy.shares).map(function (key) {
+        return [Number(key).toFixed(2), book.buy.shares[key]];
       });
       this.setState({
         buy: buyData,
-        sell: sellData,
-        transactions: data.executed
+        sell: sellData // transactions: data.executed
+
       }, function () {
-        console.log(_this3.props.ticker, _this3.state);
+        console.log(_this3.props.ticker, _this3.state); // if (this.state.transactions.length > this.state.count) {
+        //     this.props.handleExecutes(this.state.transactions);
+        //     this.setState({
+        //         count: this.state.transactions.length
+        //     });
+        // }
 
-        if (_this3.state.transactions.length > _this3.state.count) {
-          _this3.props.handleExecutes(_this3.state.transactions);
-
-          _this3.setState({
-            count: _this3.state.transactions.length
-          });
+        if (transaction) {
+          _this3.props.handleExecutes(transaction);
         }
       });
     }
@@ -94675,13 +94681,13 @@ function (_Component) {
 
   _createClass(App, [{
     key: "handleExecutes",
-    value: function handleExecutes(data) {
+    value: function handleExecutes(transaction) {
       var _this2 = this;
 
-      var length = data.length;
-      var latest = data[length - 1];
+      // const length = data.length;
+      // const latest = data[length - 1];
       var executedOrders = this.state.executedOrders;
-      executedOrders.push(latest);
+      executedOrders.push(transaction);
       this.setState({
         executedOrders: executedOrders
       }, function () {

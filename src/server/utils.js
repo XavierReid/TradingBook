@@ -18,7 +18,7 @@ class Book {
             topOfTheBook: [],
             shares: {}
         };
-        this.executed = [];
+        // this.executed = [];
     }
 
     addOrder(order) {
@@ -30,12 +30,13 @@ class Book {
             this.restShares(order);
         } else {
             if (this.checkOpposite(order)) {
-                this.executeOrder(order);
+                return this.executeOrder(order);
             } else {
                 this.restShares(order);
                 this.updateBookOrdering(order);
             }
         }
+        return null;
     }
 
     executeOrder(order) {
@@ -70,7 +71,8 @@ class Book {
             price: price,
             shares: amount
         };
-        this.executed.push(log);
+        // this.executed.push(log);
+        return log;
     }
 
     checkOpposite(order) {

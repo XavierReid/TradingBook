@@ -13,11 +13,11 @@ class App extends Component {
         this.handleExecutes = this.handleExecutes.bind(this);
         this.handleNavClick = this.handleNavClick.bind(this);
     }
-    handleExecutes(data) {
-        const length = data.length;
-        const latest = data[length - 1];
+    handleExecutes(transaction) {
+        // const length = data.length;
+        // const latest = data[length - 1];
         const { executedOrders } = this.state;
-        executedOrders.push(latest);
+        executedOrders.push(transaction);
         this.setState(
             {
                 executedOrders: executedOrders

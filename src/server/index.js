@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.get('/tradeBook/:ticker', (req, res) => {
     const ticker = req.params.ticker;
     const book = Books.find(b => b.ticker === ticker);
-    res.send(book);
+    res.json({ book: book, transaction: null });
 });
 
 app.post('/addNewOrder/:ticker', (req, res) => {
@@ -32,8 +32,8 @@ app.post('/addNewOrder/:ticker', (req, res) => {
     const { side, price, shareAmount } = req.body;
     const order = new Order(ticker, side, Number(price), Number(shareAmount)); // hardcode GOOG for now
     const book = Books.find(b => b.ticker === ticker);
-    book.addOrder(order);
-    res.send(book);
+    const transaction = book.addOrder(order);
+    res.json({ book: book, transaction: transaction });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
