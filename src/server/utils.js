@@ -1,3 +1,4 @@
+// Order class... structures stock order info
 class Order {
     constructor(ticker, side, price, amount) {
         this.ticker = ticker;
@@ -7,6 +8,8 @@ class Order {
     }
 }
 
+// Share class ... determines the total amount of shares at a given price,
+// as well as all the orders that make it up
 class Share {
     constructor(price) {
         this.price = price;
@@ -23,6 +26,7 @@ class Share {
         console.log(curr, amount);
         curr -= amount;
         this.total -= amount;
+        // Removes order if completed, and sends excess shares to add to rest if any
         if (curr <= 0) {
             this.orders = this.orders.slice(0, this.orders.length - 1);
             if (curr < 0) {
@@ -41,6 +45,7 @@ class Share {
     }
 }
 
+// TradeBook class... maintains all info about a stock, including ticker, buy side shares, and sell side shares
 class Book {
     constructor(ticker) {
         this.ticker = ticker;
@@ -84,6 +89,7 @@ class Book {
             amount = share.getMostRecent();
         }
         let leftovers = share.removeFromBook(order.amount);
+        // excess shares from a trade execution that are added to the "rest"
         if (leftovers > 0) {
             order.amount = leftovers;
             this.updateBookOrdering(order);
@@ -93,6 +99,7 @@ class Book {
             side.topOfTheBook = side.topOfTheBook.slice(1, length);
             delete side.shares[price];
         }
+        // Creates and returns a record of the trade transaction
         const timestamp = () => {
             const date = Date(Date.now).toString();
             let dateArr = date.split(' ');
@@ -107,7 +114,7 @@ class Book {
         };
         return log;
     }
-
+    // Checks if the order can be executed against the "top of the book" of the opposite side
     checkOpposite(order) {
         let side;
         if (order.side == 'buy') {
@@ -119,6 +126,7 @@ class Book {
         }
     }
 
+    // Updates "top of the book" for a given side
     updateBookOrdering(order) {
         const side = this[order.side];
         if (!side.topOfTheBook.includes(order.price)) {
@@ -142,6 +150,7 @@ class Book {
     }
 }
 
+// For if you wanted to see a TradeBook with predefined orders
 const seed = book => {
     const ticker = book.ticker;
     let order1 = new Order(ticker, 'buy', 101.53, 100);

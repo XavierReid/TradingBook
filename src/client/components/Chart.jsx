@@ -10,6 +10,7 @@ import {
     Legend
 } from 'recharts';
 
+// generates chart data based on the sell and buy shares of a given TradeBook
 function generate(buy, sell) {
     const data = sell.map(sellData => ({
         name: sellData[0],
@@ -32,7 +33,6 @@ function generate(buy, sell) {
 const Chart = props => {
     const { sell, buy } = props;
     const data = generate(buy, sell);
-
     return (
         <BarChart width={500} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />

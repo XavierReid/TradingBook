@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
+
+// Navbar component that includes the dropdown menu for choosing a stock
 class Header extends Component {
     constructor(props) {
         super(props);

@@ -13,6 +13,7 @@ class App extends Component {
         this.handleExecutes = this.handleExecutes.bind(this);
         this.handleNavClick = this.handleNavClick.bind(this);
     }
+    //Gathers and saves a trade execution, when it occurs
     handleExecutes(transaction) {
         const { executedOrders } = this.state;
         executedOrders.push(transaction);
@@ -26,6 +27,7 @@ class App extends Component {
         );
     }
 
+    // Switches between TradeBooks
     handleNavClick(eventKey) {
         this.setState({ toDisplay: eventKey });
     }

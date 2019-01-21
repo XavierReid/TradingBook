@@ -33,6 +33,7 @@ class OrderForm extends Component {
         this.setState({ show: false });
     }
 
+    // Updates form info
     handleChange(e) {
         const name = e.target.name;
         const value = e.target.value;
@@ -40,7 +41,7 @@ class OrderForm extends Component {
             [name]: value
         });
     }
-
+    // Submits stock order to the TradeBook, where it is either executed or added to resting shares
     handleSubmit(e) {
         e.preventDefault();
         this.handleDismiss();

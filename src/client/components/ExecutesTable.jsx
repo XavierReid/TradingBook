@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
+// Table component for dislaying all the orders that have been executed
 const ExecutesTable = props => {
     const columns = ['Timestamp', 'Ticker', 'Price', 'Shares'];
     const rows = props.tableData;

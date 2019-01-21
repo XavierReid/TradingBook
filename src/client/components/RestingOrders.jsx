@@ -1,5 +1,7 @@
 import React from 'react';
 
+// A component for displaying the list of resting orders at a given price
+// Is displayed when the user hovers over the corresponding bar on the chart
 const RestingOrders = (props) => {
         const { active } = props;
         if (active) {

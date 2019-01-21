@@ -15,9 +15,8 @@ class TradeBook extends Component {
         this.getStockData = this.getStockData.bind(this);
     }
 
+    // Updates the TradeBook component when a user switches from one stock to another
     componentDidUpdate(nextProps) {
-        console.log(nextProps);
-        
         if (this.props.company.ticker !== nextProps.company.ticker) {
             this.setState({
                 buy: [],
@@ -30,6 +29,7 @@ class TradeBook extends Component {
         this.getStockData(this.props.company.ticker);
     }
 
+    // Retrieves a stock's TradeBook data from the backend
     getStockData(ticker) {
         fetch(`/tradeBook/${ticker}`)
             .then(res => res.json())
@@ -37,7 +37,8 @@ class TradeBook extends Component {
                 this.handleBookUpdate(data);
             });
     }
-
+    
+    // Updates the TradeBook info whenever an order is submitted
     handleBookUpdate(data) {
         const { book, transaction } = data;
         const sellData = Object.keys(book.sell.shares).map(key => [

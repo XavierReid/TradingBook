@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
+
+// List of available companies to choose from
 const options = [
     { name: 'Google', ticker: 'GOOG' },
     { name: 'Facebook', ticker: 'FB' },
