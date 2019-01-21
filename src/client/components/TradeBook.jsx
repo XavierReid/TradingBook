@@ -9,9 +9,7 @@ class TradeBook extends Component {
         super(props);
         this.state = {
             buy: [],
-            sell: [],
-            transactions: [],
-            count: 0
+            sell: []
         };
         this.handleBookUpdate = this.handleBookUpdate.bind(this);
         this.getStockData = this.getStockData.bind(this);
@@ -22,8 +20,6 @@ class TradeBook extends Component {
             this.setState({
                 buy: [],
                 sell: []
-                // transactions: [],
-                // count: 0
             });
             this.getStockData(this.props.ticker);
         }
