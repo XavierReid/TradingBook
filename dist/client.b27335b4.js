@@ -43431,14 +43431,16 @@ function (_Component) {
       this.setState({
         show: false
       });
-    }
+    } // Updates form info
+
   }, {
     key: "handleChange",
     value: function handleChange(e) {
       var name = e.target.name;
       var value = e.target.value;
       this.setState(_defineProperty({}, name, value));
-    }
+    } // Submits stock order to the TradeBook, where it is either executed or added to resting shares
+
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
@@ -43550,6 +43552,8 @@ var _react = _interopRequireDefault(require("react"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// A component for displaying the list of resting orders at a given price
+// Is displayed when the user hovers over the corresponding bar on the chart
 var RestingOrders = function RestingOrders(props) {
   var active = props.active;
 
@@ -94370,6 +94374,7 @@ var _recharts = require("recharts");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// generates chart data based on the sell and buy shares of a given TradeBook
 function generate(buy, sell) {
   var data = sell.map(function (sellData) {
     return {
@@ -94398,6 +94403,10 @@ var Chart = function Chart(props) {
   var sell = props.sell,
       buy = props.buy;
   var data = generate(buy, sell);
+  data.sort(function (a, b) {
+    return Number(a.name) - Number(b.name);
+  });
+  console.log('SORTED', data);
   return _react.default.createElement(_recharts.BarChart, {
     width: 500,
     height: 300,
@@ -94483,13 +94492,12 @@ function (_Component) {
     _this.handleBookUpdate = _this.handleBookUpdate.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.getStockData = _this.getStockData.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
-  }
+  } // Updates the TradeBook component when a user switches from one stock to another
+
 
   _createClass(TradeBook, [{
     key: "componentDidUpdate",
     value: function componentDidUpdate(nextProps) {
-      console.log(nextProps);
-
       if (this.props.company.ticker !== nextProps.company.ticker) {
         this.setState({
           buy: [],
@@ -94502,7 +94510,8 @@ function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.getStockData(this.props.company.ticker);
-    }
+    } // Retrieves a stock's TradeBook data from the backend
+
   }, {
     key: "getStockData",
     value: function getStockData(ticker) {
@@ -94513,7 +94522,8 @@ function (_Component) {
       }).then(function (data) {
         _this2.handleBookUpdate(data);
       });
-    }
+    } // Updates the TradeBook info whenever an order is submitted
+
   }, {
     key: "handleBookUpdate",
     value: function handleBookUpdate(data) {
@@ -94580,6 +94590,7 @@ var _reactBootstrap = require("react-bootstrap");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Table component for dislaying all the orders that have been executed
 var ExecutesTable = function ExecutesTable(props) {
   var columns = ['Timestamp', 'Ticker', 'Price', 'Shares'];
   var rows = props.tableData;
@@ -94633,6 +94644,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+// Navbar component that includes the dropdown menu for choosing a stock
 var Header =
 /*#__PURE__*/
 function (_Component) {
@@ -94741,7 +94753,8 @@ function (_Component) {
     _this.handleExecutes = _this.handleExecutes.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleNavClick = _this.handleNavClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
-  }
+  } //Gathers and saves a trade execution, when it occurs
+
 
   _createClass(App, [{
     key: "handleExecutes",
@@ -94755,7 +94768,8 @@ function (_Component) {
       }, function () {
         console.log(_this2.state.executedOrders);
       });
-    }
+    } // Switches between TradeBooks
+
   }, {
     key: "handleNavClick",
     value: function handleNavClick(eventKey) {
@@ -94802,6 +94816,7 @@ var _App = _interopRequireDefault(require("./components/App"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// List of available companies to choose from
 var options = [{
   name: 'Google',
   ticker: 'GOOG'
@@ -94847,7 +94862,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51696" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49888" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

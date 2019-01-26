@@ -33,6 +33,9 @@ function generate(buy, sell) {
 const Chart = props => {
     const { sell, buy } = props;
     const data = generate(buy, sell);
+    data.sort((a, b) => Number(a.name) - Number(b.name));
+    console.log('SORTED', data);
+
     return (
         <BarChart width={500} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
