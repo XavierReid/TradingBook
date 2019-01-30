@@ -1,3 +1,4 @@
 node_modules/
 server/tempCodeRunnerFile.js
 .cache/
+.DS_Store
