@@ -53,7 +53,7 @@ class OrderForm extends Component {
             this.handleShow();
         } else {
             const data = JSON.stringify(this.state);
-            fetch(`/addNewOrder/${this.props.ticker}`, {
+            fetch(`/tradeBook/${this.props.ticker}`, {
                 method: 'POST',
                 body: data,
                 headers: {

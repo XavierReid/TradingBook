@@ -25,7 +25,7 @@ app.get('/tradeBook/:ticker', (req, res) => {
 
 // Submits a stock order to the corresponding TradeBook
 // If a trade transanction is executed, send the transaction to the React client as well
-app.post('/addNewOrder/:ticker', (req, res) => {
+app.post('/tradeBook/:ticker', (req, res) => {
     console.log('received new order');
     const ticker = req.params.ticker;
     const { side, price, shareAmount } = req.body;
